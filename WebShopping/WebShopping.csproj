@@ -134,7 +134,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\AdminRolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1066,11 +1065,6 @@
     <Content Include="Content\AdminAssets\vendors\select2\select2.jquery.json" />
     <Content Include="Content\AdminAssets\vendors\select2\select2_locale_en.js.template" />
     <Content Include="Areas\Admin\Views\Shared\_SideNavPartialView.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminRoles\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminRoles\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminRoles\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminRoles\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminRoles\Index.cshtml" />
     <Content Include="Content\assets\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\assets\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\assets\fonts\fontawesome-webfont.woff" />
