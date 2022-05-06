@@ -1,0 +1,36 @@
+﻿@model IEnumerable<WebShopping.Models.Role>
+
+@{
+    ViewBag.Title = "Quản lý quyền truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tên quyền truy cập</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.RoleID</th>
+                        <td>@item.RoleName</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <a class="btn btn-primary btn-tone m-r-5" href="@Url.Action("Details", "AdminRoles", new { id = item.RoleID})">Chi tiết</a>
+                            <a class="btn btn-warning btn-tone m-r-5" href="@Url.Action("Edit", "AdminRoles", new { id = item.RoleID})">Sửa</a>
+                            <a class="btn btn-danger btn-tone m-r-5" href="@Url.Action("Delete", "AdminRoles", new { id = item.RoleID})">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
