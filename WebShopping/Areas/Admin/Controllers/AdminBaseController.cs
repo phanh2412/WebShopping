@@ -38,6 +38,7 @@ namespace WebShopping.Areas.Admin.Controllers
             );
         }
 
+
         [AllowAnonymous]
         public ActionResult Unauthorized()
         {
@@ -63,5 +64,6 @@ namespace WebShopping.Areas.Admin.Controllers
                 }, JsonRequestBehavior.AllowGet
             );
         }
+
     }
 }

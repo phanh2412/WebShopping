@@ -24,8 +24,8 @@ namespace WebShopping.Filters
                     } else
                     {
                         filterContext.Result = new RedirectResult("/admin/login");
-                    }
-                    
+                    }  
+
                 }
 
             }
