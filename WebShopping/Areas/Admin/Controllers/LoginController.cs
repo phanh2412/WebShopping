@@ -3,15 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebShopping.Areas.Admin.Models;
 
 namespace WebShopping.Areas.Admin.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : AdminBaseController
     {
-        // GET: Admin/Login
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult LoginPost(AdminSession adminLogin)
+        {
+            try
+            {
+                return Success();
+            }
+            catch(Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
     }
 }
