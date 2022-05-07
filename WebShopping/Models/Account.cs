@@ -43,5 +43,11 @@ namespace WebShopping.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Posts { get; set; }
+
+        public class EnumRole
+        {
+            public const int ADMIN = 1;
+            public const int STAFF = 2;
+        }
     }
 }
