@@ -37,5 +37,31 @@ namespace WebShopping.Areas.Admin.Controllers
                 }, JsonRequestBehavior.AllowGet
             );
         }
+
+        [AllowAnonymous]
+        public ActionResult Unauthorized()
+        {
+            return Json(
+                new WebShopping.Models.JsonResult()
+                {
+                    data = null,
+                    status = WebShopping.Models.JsonResult.Status.UNAUTHOR,
+                    message = WebShopping.Models.JsonResult.Message.UNAUTHOR_MESSAGE,
+                }, JsonRequestBehavior.AllowGet
+            );
+        }
+
+        [AllowAnonymous]
+        public ActionResult Unauthenticated()
+        {
+            return Json(
+                new WebShopping.Models.JsonResult()
+                {
+                    data = null,
+                    status = WebShopping.Models.JsonResult.Status.UNAUTHEN,
+                    message = WebShopping.Models.JsonResult.Message.UNAUTHEN_MESSAGE,
+                }, JsonRequestBehavior.AllowGet
+            );
+        }
     }
 }

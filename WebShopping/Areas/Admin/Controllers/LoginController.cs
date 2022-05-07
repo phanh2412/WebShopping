@@ -17,10 +17,12 @@ namespace WebShopping.Areas.Admin.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult LoginPost(AdminSession adminLogin)
+        public ActionResult LoginPost(AdminLoginModel adminLoginModel)
         {
             try
             {
+                if (string.IsNullOrEmpty(adminLoginModel.account) || string.IsNullOrEmpty(adminLoginModel.password)) return Error("Tài khoản hoặc mật khẩu không được để trống");
+                AdminSession adminSession = new AdminSession();
                 return Success();
             }
             catch(Exception ex)
