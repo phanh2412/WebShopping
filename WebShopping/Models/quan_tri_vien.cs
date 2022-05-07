@@ -6,20 +6,27 @@ namespace WebShopping.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Attribute
+    public partial class quan_tri_vien
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Attribute()
+        public quan_tri_vien()
         {
-            AttributesPrices = new HashSet<AttributesPrice>();
+            don_dat_hang = new HashSet<don_dat_hang>();
         }
 
-        public int AttributeID { get; set; }
+        [Key]
+        public int QuanTriVienId { get; set; }
 
         [StringLength(50)]
-        public string Name { get; set; }
+        public string HoVaTen { get; set; }
+
+        [StringLength(200)]
+        public string TaiKhoan { get; set; }
+
+        [StringLength(200)]
+        public string MatKhau { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AttributesPrice> AttributesPrices { get; set; }
+        public virtual ICollection<don_dat_hang> don_dat_hang { get; set; }
     }
 }
