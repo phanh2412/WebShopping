@@ -6,20 +6,26 @@ namespace WebShopping.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Payment
+    public partial class gio_hang
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Payment()
+        public gio_hang()
         {
-            Orders = new HashSet<Order>();
+            chi_tiet_gio_hang = new HashSet<chi_tiet_gio_hang>();
         }
 
-        public int PaymentID { get; set; }
+        [Key]
+        public int GioHangId { get; set; }
 
-        [StringLength(100)]
-        public string PaymentName { get; set; }
+        public int? KhachId { get; set; }
+
+        public int? TongSanPham { get; set; }
+
+        public long? TongTien { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<chi_tiet_gio_hang> chi_tiet_gio_hang { get; set; }
+
+        public virtual khach khach { get; set; }
     }
 }
