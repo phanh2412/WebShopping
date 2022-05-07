@@ -138,30 +138,24 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\Admin\Models\AdminSession.cs" />
-    <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Filters\AdminLoginRequireAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\Attribute.cs" />
-    <Compile Include="Models\AttributesPrice.cs" />
+    <Compile Include="Models\anh_san_pham.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Location.cs" />
-    <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\OrderDetail.cs" />
-    <Compile Include="Models\Page.cs" />
-    <Compile Include="Models\Payment.cs" />
-    <Compile Include="Models\Post.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\Role.cs" />
-    <Compile Include="Models\Shipper.cs" />
-    <Compile Include="Models\Shopping_DBContext.cs" />
-    <Compile Include="Models\TransactStatu.cs" />
+    <Compile Include="Models\chi_tiet_don_dat_hang.cs" />
+    <Compile Include="Models\chi_tiet_gio_hang.cs" />
+    <Compile Include="Models\chi_tiet_trang_thai_don_dat_hang.cs" />
+    <Compile Include="Models\danh_muc_san_pham.cs" />
+    <Compile Include="Models\don_dat_hang.cs" />
+    <Compile Include="Models\gio_hang.cs" />
+    <Compile Include="Models\khach.cs" />
+    <Compile Include="Models\quan_tri_vien.cs" />
+    <Compile Include="Models\san_pham.cs" />
+    <Compile Include="Models\TinaFlowers_DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1220,7 +1214,6 @@
     <Content Include="Views\Shared\_HeaderPartialView.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
   </ItemGroup>

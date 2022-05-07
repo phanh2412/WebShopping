@@ -6,23 +6,23 @@ namespace WebShopping.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Role
+    public partial class danh_muc_san_pham
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public danh_muc_san_pham()
         {
-            Accounts = new HashSet<Account>();
+            san_pham = new HashSet<san_pham>();
         }
 
-        public int RoleID { get; set; }
+        [Key]
+        public int DanhMucSanPhamId { get; set; }
 
-        [StringLength(50)]
-        public string RoleName { get; set; }
+        [StringLength(100)]
+        public string TenDanhMucSanPham { get; set; }
 
-        [StringLength(50)]
-        public string Description { get; set; }
+        public int? SoLuongSanPham { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<san_pham> san_pham { get; set; }
     }
 }
