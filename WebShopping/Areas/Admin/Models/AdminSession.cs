@@ -14,4 +14,11 @@ namespace WebShopping.Areas.Admin.Models
         public string Password { get; set; }
         public int RoleID { get; set; }
     }
+
+    public class AdminLoginModel
+    {
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+
 }

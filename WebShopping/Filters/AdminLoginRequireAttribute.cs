@@ -16,9 +16,16 @@ namespace WebShopping.Filters
 
                 if (filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)) return;
                 AdminSession adminSession = (AdminSession)filterContext.HttpContext.Session["AdminSession"];
+
                 if (adminSession == null)
                 {
-                    filterContext.Result = new RedirectResult("/admin/login");
+                    if (filterContext.HttpContext.Request.IsAjaxRequest()) {
+                        filterContext.Result = new RedirectResult("/admin/adminbase/unauthenticated");
+                    } else
+                    {
+                        filterContext.Result = new RedirectResult("/admin/login");
+                    }  
+
                 }
 
             }
