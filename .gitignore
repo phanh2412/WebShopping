@@ -1,0 +1,7 @@
+.vs
+*.user
+Debug
+bin
+obj
+Publish
+Properties
