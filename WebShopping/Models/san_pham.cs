@@ -17,7 +17,7 @@ namespace WebShopping.Models
         }
 
         [Key]
-        public int SanPhamId { get; set; }
+        public string SanPhamId { get; set; }
 
         [StringLength(200)]
         public string TenSanPham { get; set; }
@@ -48,5 +48,18 @@ namespace WebShopping.Models
         public virtual ICollection<chi_tiet_gio_hang> chi_tiet_gio_hang { get; set; }
 
         public virtual danh_muc_san_pham danh_muc_san_pham { get; set; }
+    }
+
+    public class SanPhamPostModel
+    {
+        public string SanPhamId { get; set; }
+        public string TenSanPham { get; set; }
+        public int DanhMucSanPhamId { get; set; }
+        public int Gia { get; set; }
+        public string AnhDaiDien_Base64 { get; set; }
+        public string MoTa { get; set; }
+        public string Tag { get; set; }
+        public List<string> AnhSanPham { get; set; }
+        public List<int> AnhSanPhamXoa { get; set; }
     }
 }

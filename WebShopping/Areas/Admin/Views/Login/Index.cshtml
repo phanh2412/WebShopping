@@ -33,7 +33,7 @@
                                         <img class="img-fluid" alt="" src="~/Content/AdminAssets/images/logo/logo.png">
                                         <h2 class="m-b-0">Sign In</h2>
                                     </div>
-                                    <form>
+                                    <div>
                                         <div class="form-group">
                                             <label class="font-weight-semibold" for="userName">Tài khoản:</label>
                                             <div class="input-affix">
@@ -51,18 +51,18 @@
                                         <div class="form-group">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span class="font-size-13 text-muted">
-                                                
+
                                                 </span>
                                                 <button onclick="Login();" class="btn btn-primary">Đăng nhập</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-           
+
             </div>
         </div>
     </div>
@@ -82,13 +82,15 @@
             };
 
             if (GetObjectProperty(model, 'taiKhoan') === '' || GetObjectProperty(model, 'matKhau') === '') { alert('Tài khoản hoặc mật khẩu không được để trống.'); return; }
-            let rs = await $.post('/admin/login/loginpost', model);
-            if (rs === null || rs === '' || typeof rs === 'undefined') return;
-            if (GetObjectProperty(rs, 'status') === '') return;
-            if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) { if (GetObjectProperty(rs, 'message') !== '') alert(GetObjectProperty(rs, 'message')); return; }
-            if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
-                window.location.href = '/admin/home'
-            }
+            $.post('/admin/login/loginpost', model, function (rs) {
+                if (rs === null || rs === '' || typeof rs === 'undefined') return;
+                if (GetObjectProperty(rs, 'status') === '') return;
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) { if (GetObjectProperty(rs, 'message') !== '') alert(GetObjectProperty(rs, 'message')); return; }
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    window.location.href = '/admin/home/index';
+                }
+            });
+
         }
     </script>
 </body>
