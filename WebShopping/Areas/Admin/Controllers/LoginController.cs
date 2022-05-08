@@ -17,7 +17,11 @@ namespace WebShopping.Areas.Admin.Controllers
         {
             quan_tri_vien quanTriVien = (quan_tri_vien)HttpContext.Session["QuanTriVienSession"];
             if (quanTriVien != null) {
-                return RedirectToRoute("/admin/home");
+                return RedirectToRoute(new { 
+                area = "admin",
+                controller = "home",
+                action = "index"
+                });
             }
             return View();
         }
@@ -38,6 +42,7 @@ namespace WebShopping.Areas.Admin.Controllers
                 HttpContext.Session["QuanTriVienSession"] = quanTriVien;
 
                 return Success();
+            
             }
             catch(Exception ex)
             {

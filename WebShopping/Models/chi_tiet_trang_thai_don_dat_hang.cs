@@ -11,7 +11,7 @@ namespace WebShopping.Models
         [Key]
         public long ChiTietTrangThaiDonDatHangId { get; set; }
 
-        public long? DonDatHangId { get; set; }
+        public string DonDatHangId { get; set; }
 
         [StringLength(20)]
         public string TrangThai { get; set; }
