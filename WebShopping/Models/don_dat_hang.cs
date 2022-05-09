@@ -16,7 +16,7 @@ namespace WebShopping.Models
         }
 
         [Key]
-        public long DonDatHangId { get; set; }
+        public string DonDatHangId { get; set; }
 
         public int? KhachId { get; set; }
 

@@ -33,37 +33,36 @@
                                         <img class="img-fluid" alt="" src="~/Content/AdminAssets/images/logo/logo.png">
                                         <h2 class="m-b-0">Sign In</h2>
                                     </div>
-                                    <form>
+                                    <div>
                                         <div class="form-group">
-                                            <label class="font-weight-semibold" for="userName">Username:</label>
+                                            <label class="font-weight-semibold" for="userName">Tài khoản:</label>
                                             <div class="input-affix">
                                                 <i class="prefix-icon anticon anticon-user"></i>
-                                                <input type="text" class="form-control" id="userName" placeholder="Username">
+                                                <input type="text" class="form-control" id="userName" placeholder="Số điện thoại hoặc Email">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="font-weight-semibold" for="password">Password:</label>
-                                            <a class="float-right font-size-13 text-muted" href="">Forget Password?</a>
+                                            <label class="font-weight-semibold" for="password">Mật khẩu:</label>
                                             <div class="input-affix m-b-10">
                                                 <i class="prefix-icon anticon anticon-lock"></i>
-                                                <input type="password" class="form-control" id="password" placeholder="Password">
+                                                <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span class="font-size-13 text-muted">
-                                                
+
                                                 </span>
-                                                <button class="btn btn-primary">Sign In</button>
+                                                <button onclick="Login();" class="btn btn-primary">Đăng nhập</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-           
+
             </div>
         </div>
     </div>
@@ -71,15 +70,27 @@
     <script src="/Content/jquery-3.6.0.min.js"></script>
     <!-- Core Vendors JS -->
     <script src="/Content/AdminAssets/js/vendors.min.js"></script>
-
+    <script src="~/Scripts/helper.js"></script>
     <!-- page js -->
     <!-- Core JS -->
     <script src="/Content/AdminAssets/js/app.min.js"></script>
     <script>
-        var Login = function () {
+        var Login = async function () {
             let model = {
-                account : $()
+                taiKhoan: $('#userName').val(),
+                matKhau: $('#password').val()
             };
+
+            if (GetObjectProperty(model, 'taiKhoan') === '' || GetObjectProperty(model, 'matKhau') === '') { alert('Tài khoản hoặc mật khẩu không được để trống.'); return; }
+            $.post('/admin/login/loginpost', model, function (rs) {
+                if (rs === null || rs === '' || typeof rs === 'undefined') return;
+                if (GetObjectProperty(rs, 'status') === '') return;
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) { if (GetObjectProperty(rs, 'message') !== '') alert(GetObjectProperty(rs, 'message')); return; }
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    window.location.href = '/admin/home/index';
+                }
+            });
+
         }
     </script>
 </body>

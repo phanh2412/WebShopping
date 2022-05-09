@@ -5,20 +5,18 @@ using System.Web;
 
 namespace WebShopping.Areas.Admin.Models
 {
-    public class AdminSession
+    public class QuanTriVienSession
     {
-        public int AccountID { get; set; }
-        public string FullName { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public int RoleID { get; set; }
+        public int QuanTriVienId { get; set; }
+        public string HoVaTen { get; set; }
+        public string TaiKhoan { get; set; }
+        public string MatKhau { get; set; }
     }
 
-    public class AdminLoginModel
+    public class QuanTriVienDangNhap
     {
-        public string account { get; set; }
-        public string password { get; set; }
+        public string taiKhoan { get; set; }
+        public string matKhau { get; set; }
     }
 
 }

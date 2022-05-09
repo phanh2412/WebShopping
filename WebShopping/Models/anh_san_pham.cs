@@ -11,11 +11,12 @@ namespace WebShopping.Models
         [Key]
         public long AnhSanPhamId { get; set; }
 
-        public int? SanPhamId { get; set; }
+        public string SanPhamId { get; set; }
 
         [StringLength(200)]
         public string TenFileAnh { get; set; }
 
         public virtual san_pham san_pham { get; set; }
     }
+
 }

@@ -13,7 +13,7 @@ namespace WebShopping.Models
 
         public int? GioHangId { get; set; }
 
-        public int? SanPhamId { get; set; }
+        public string SanPhamId { get; set; }
 
         public int? SoLuong { get; set; }
 

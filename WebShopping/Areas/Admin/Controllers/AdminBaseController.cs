@@ -9,7 +9,7 @@ using WebShopping.Models;
 
 namespace WebShopping.Areas.Admin.Controllers
 {
-    [AdminLoginRequireAttribute]
+    [AdminLoginRequire]
     public class AdminBaseController : Controller
     {
         [AllowAnonymous]
