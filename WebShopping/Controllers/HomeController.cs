@@ -32,10 +32,11 @@ namespace WebShopping.Controllers
             return View();
         }
 
-        public ActionResult RenderNav()
+        public ActionResult RenderProduct()
         {
-            List<danh_muc_san_pham> listDanhMuc = db.danh_muc_san_pham.ToList();
-            return PartialView("_HeaderPartialView", listDanhMuc);
+            List<san_pham> listSanPham = db.san_pham.OrderBy(x=>Guid.NewGuid()).Take(8).ToList();
+
+            return PartialView("SanPhamTrangChu", listSanPham);
         }
     }
 }

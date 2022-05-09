@@ -137,13 +137,15 @@
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageCustomerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageOrderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageProductController.cs" />
     <Compile Include="Areas\Admin\Models\AdminSession.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\WishListController.cs" />
     <Compile Include="Filters\AdminLoginRequireAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -161,6 +163,7 @@
     <Compile Include="Models\san_pham.cs" />
     <Compile Include="Models\TinaFlowers_DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\HelperProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AdminAssets\css\app.min.css" />
@@ -807,24 +810,6 @@
     <Content Include="Content\assets\images\product\small-size\1-4-112x124.jpg" />
     <Content Include="Content\assets\images\product\small-size\1-5-112x124.jpg" />
     <Content Include="Content\assets\images\product\small-size\1-6-112x124.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_hong_99bong_baby.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_hong_nhu_cao_cap_boc_den.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_hong_nhu_cao_cap_boc_trang.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_hong_sap_cao_cap_boc_pha.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_hong_sap_cao_cap_trai_tim_dai.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_luoi_nhu_va_sap.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_nhu_tron_cao_cap.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_25bong_tui_xach.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_50bong_cao_cap_vuong_mien.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_cao_cap_boc_do.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_cao_cap_boc_trang.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_cao_cap_nhu_boc_ghi.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_cao_cap_xep_chu.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_cap_cap_nhu_boc_bac.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_nhu_25bong_cao_cap.jpg" />
-    <Content Include="Content\assets\images\sanpham\bo_hoa_sap_phu_voan_tron.jpg" />
-    <Content Include="Content\assets\images\sanpham\gau_hoa_hong_xop_size_70cm.jpg" />
-    <Content Include="Content\assets\images\sanpham\gau_om_trai_tim_hoa_hong_xop_cao_cap_size_70.jpg" />
     <Content Include="Content\assets\images\sanpham\gio_hoa_sap\gio_hoa_hong_sap_cao_cap_han_quoc\1.jpg" />
     <Content Include="Content\assets\images\sanpham\gio_hoa_sap\gio_hoa_hong_sap_cao_cap_han_quoc\2.jpg" />
     <Content Include="Content\assets\images\sanpham\gio_hoa_sap\gio_hoa_hong_sap_cao_cap_han_quoc\3.jpg" />
@@ -836,8 +821,6 @@
     <Content Include="Content\assets\images\sanpham\gio_hoa_sap\hoa_sap_gio_may_sieu_xinh\2.jpg" />
     <Content Include="Content\assets\images\sanpham\gio_hoa_sap\hoa_sap_gio_may_sieu_xinh\3.jpg" />
     <Content Include="Content\assets\images\sanpham\gio_hoa_sap\hoa_sap_gio_may_sieu_xinh\4.jpg" />
-    <Content Include="Content\assets\images\sanpham\hoa_21bong_mix_cac_loai.jpg" />
-    <Content Include="Content\assets\images\sanpham\hoa_hong_sap_50_bong.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_hong_99bong_baby\1.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_hong_99bong_baby\2.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_hong_99bong_baby\3.jpg" />
@@ -894,7 +877,7 @@
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_sap_nhu_25bong_cao_cap\2.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_sap_nhu_25bong_cao_cap\3.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_sap_nhu_25bong_cao_cap\4.jpg" />
-    <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_sap_phu_voan_tron\bo_hoa_sap_phu_voan_tron.jpg" />
+    <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\bo_hoa_sap_phu_voan_tron\1.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\gau_40cm_cao_cap_den_vuong_mien_topper\1.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\gau_40cm_cao_cap_den_vuong_mien_topper\2.jpg" />
     <Content Include="Content\assets\images\sanpham\hoa_hong_sap_cao_cap\gau_hoa_hong_xop_size_70cm\1.jpg" />
@@ -1058,6 +1041,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery-3.6.0.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1455,8 +1439,9 @@
     <Content Include="Views\Home\CamKet.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Checkout\Index.cshtml" />
-    <Content Include="Views\WishList\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Home\SanPhamTrangChu.cshtml" />
+    <Content Include="Views\Product\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

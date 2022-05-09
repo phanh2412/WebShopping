@@ -163,8 +163,8 @@ D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\bin\Newtonsoft.Json.xml
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\bin\Antlr3.Runtime.pdb
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\obj\Debug\WebShopping.csproj.AssemblyReference.cache
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\obj\Debug\WebShopping.csproj.CoreCompileInputs.cache
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\obj\Debug\WebShopping.csproj.CopyComplete
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\obj\Debug\WebShopping.dll
 D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\obj\Debug\WebShopping.pdb
+D:\TaiLieu\Nam3_HocKy2\ThucTapChuyenMon\NguyenThiPhuongAnh_191210066\WebShopping\WebShopping\WebShopping\obj\Debug\WebShopping.csproj.AssemblyReference.cache
