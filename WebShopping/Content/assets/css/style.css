@@ -15570,6 +15570,7 @@ img {
 
 .img-full {
   width: 100%;
+  height:300px;
   overflow: hidden;
   -o-object-fit: cover;
      object-fit: cover;
@@ -16281,6 +16282,7 @@ blockquote .inner-content .user-name:before {
 /* ---Price Box--- */
 .price-box span {
   font-size: 15px;
+  color: red;
 }
 
 .price-box span.old-price {
@@ -17981,6 +17983,7 @@ blockquote .inner-content .user-name:before {
   border-right: 1px solid #f1f1f1;
   padding: 25px 30px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .product-content .rating-box ul {
@@ -17999,8 +18002,12 @@ blockquote .inner-content .user-name:before {
 }
 
 .product-content .product-name {
+    overflow: hidden;
   margin-bottom: 10px;
   display: block;
+  -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
 }
 
 .product-list-item {
