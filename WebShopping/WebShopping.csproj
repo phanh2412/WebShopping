@@ -1407,6 +1407,7 @@
     <Content Include="Content\AdminAssets\vendors\select2\select2_locale_en.js.template" />
     <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\helper.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -1447,6 +1448,9 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\AdminBase\" />
+    <Folder Include="Areas\Admin\Views\ManageCustomer\" />
+    <Folder Include="Areas\Admin\Views\ManageOrder\" />
+    <Folder Include="Areas\Admin\Views\ManageProduct\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
