@@ -38,5 +38,15 @@ namespace WebShopping.Models
         public virtual khach khach { get; set; }
 
         public virtual quan_tri_vien quan_tri_vien { get; set; }
+
+        public class EnumTrangThai
+        {
+            public const string CHO_XAC_NHAN = "CHO_XAC_NHAN";
+            public const string DANG_XU_LY = "DANG_XU_LY";
+            public const string DA_THANH_TOAN = "DA_THANH_TOAN";
+            public const string HOAN_THANH = "HOAN_THANH";
+            public const string KHACH_HANG_HUY = "KHACH_HANG_HUY";
+            public const string CUA_HANG_HUY = "CUA_HANG_HUY";
+        }
     }
 }
