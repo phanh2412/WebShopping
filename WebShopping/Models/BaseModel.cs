@@ -26,6 +26,9 @@ namespace WebShopping.Models
             public const string UNAUTHEN_MESSAGE = "Phiên làm việc của bạn đã hết, vui lòng đăng nhập lại để tiếp tục sử dụng.";
 
             public const string PRODUCT_NOT_FOUND = "Không tìm thấy thông tin về sản phẩm.";
+
+            public const string ORDER_NOT_FOUND = "Không tìm thấy thông tin về đơn đặt hàng.";
+            public const string ORDER_STATUS_INVALID = "Trạng thái đơn đặt hàng không hợp lệ cho thao tác này. Làm mới trang web và thử lại.";
         }
     }
 
@@ -37,6 +40,7 @@ namespace WebShopping.Models
         public const string PRODUCT_IMAGE_PATH = "~/files/product/";
 
         public const int PAGE_SIZE = 9;
+        public const int ADMIN_PAGE_SIZE = 20;
 
     }
 }
