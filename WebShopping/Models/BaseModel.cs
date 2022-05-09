@@ -35,5 +35,8 @@ namespace WebShopping.Models
         public const string PRODUCT_THUMBNAIL_PATH = "~/files/product/thumbnail/";
         public const string PRODUCT_IMAGE_URL = "/files/product/";
         public const string PRODUCT_IMAGE_PATH = "~/files/product/";
+
+        public const int PAGE_SIZE = 9;
+
     }
 }
