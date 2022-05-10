@@ -2,8 +2,89 @@
 @{
     ViewBag.Title = "Quản lý sản phẩm";
 }
+@section styles{
+    <style>
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            flex-wrap: wrap;
+        }
+
+            .search-section .search-item {
+                display: flex;
+                flex-direction: column;
+                padding: 10px 20px 10px 0;
+                flex: 1;
+            }
+
+                .search-section .search-item > .label {
+                    width: 100px;
+                }
+
+                .search-section .search-item > .search-input {
+                    width: 100%;
+                }
+
+        #list-product {
+        }
+
+            #list-product .product-thumbnail {
+                width: 120px;
+                height: 90px;
+                display: block;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            #list-product .product-price {
+                display: flex;
+                font-size: 12px;
+            }
+
+                #list-product .product-price > label {
+                    width: 50px;
+                    margin: 0;
+                }
+
+                #list-product .product-price > div {
+                    display: flex;
+                }
+    </style>
+}
+<div class="search-section">
+    <div class="search-item">
+        <div class="label">Từ khóa</div>
+        <div class="search-input">
+            <input class="form-control" placeholder="Nhập từ khóa tìm kiếm" id="search_keyWord" onkeypress="search_keyWord_OnKeypress(event);" />
+        </div>
+    </div>
+    <div style="display:flex;flex-direction:row;">
+        <div class="search-item">
+            <div class="label">Danh mục</div>
+            <div class="search-input">
+                <select class="form-control" id="search_danhMucSanPhamId" onchange="LoadData();">
+                    <option>Tất cả</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="search-item">
+            <div class="label">Trạng thái</div>
+            <div class="search-input">
+                <select class="form-control" id="search_trangThai" onchange="LoadData();">
+                    <option value="">Tất cả</option>
+                    <option selected value="True">Đang bán</option>
+                    <option value="false">Ngừng bán</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
 
+</div>
 
 <div class="table-responsive">
     <table class="table table-hover">
@@ -12,44 +93,122 @@
                 <th width="200">Ảnh mô tả</th>
                 <th>Thông tin chung</th>
                 <th width="200">
-                    <button class="btn btn-primary btn-sm btn-tone"><i class="anticon anticon-plus"></i> Tạo sản phẩm</button>
+                    <button onclick="CreateProduct();" class="btn btn-primary btn-sm btn-tone"><i class="anticon anticon-plus"></i> Tạo sản phẩm</button>
                 </th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td><div class="product-thumbnail"></div></td>
-                <td>
-                    <div>
-                        <div class="product-name"></div>
-                        <div class="product-price">
-                            <label>Giá</label>
-                            <div></div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn  btn-tone btn-info">
-                            <i class="anticon anticon-info-circle"></i>
-                        </button>
-                        <button type="button" class="btn btn-tone btn-warning">
-                            <i class="anticon anticon-edit "></i>
-                        </button>
-                        <button type="button" class="btn  btn-tone btn-danger" data-toggle="tooltip" data-placement="top" title="Ngừng bán">
-                            <i class="anticon anticon-poweroff "></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+        <tbody id="list-product">
         </tbody>
     </table>
 </div>
 
+<div id="pagination">
+    <ul>
+        <li><button class="btn btn-primary btn-tone">1</button></li>
+        <li class="active"><button class="btn btn-primary btn-tone">2</button></li>
+    </ul>
+</div>
+
 @section scripts{
     <script>
-        var LoadData = function () {
-            $.get
+        var InitPage = function () {
+            $.get('/admin/manageproduct/GetListProductCategory', function (rs) {
+                if (rs) if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    if (rs.data) if (rs.data.length > 0) {
+                        $('#search_danhMucSanPhamId').html('');
+                        $('#search_danhMucSanPhamId').append(`<option selected value="">Tất cả</option>`);
+                        for (let index = 0; index < rs.data.length; index++) {
+                            $('#search_danhMucSanPhamId').append(`<option value="${rs.data[index].DanhMucSanPhamId}">${rs.data[index].TenDanhMucSanPham}</option>`);
+                        }
+                    }
+                }
+            });
+            LoadData();
         }
+
+        var LoadData = function (page = 1) {
+            let danhMucSanPhamId = $('#search_danhMucSanPhamId').val();
+            let keyword = $('#search_keyWord').val();
+            let dangKichHoat = $('#search_trangThai').val();
+
+            $.get('/admin/manageproduct/getlistproduct?page=' + page + '&danhMucSanPhamId=' + danhMucSanPhamId + '&keyword=' + keyword + '&dangKichHoat=' + dangKichHoat, function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    if (rs.data.ListProduct.length > 0) {
+                        $('#list-product').html('');
+                        for (let indexProduct = 0; indexProduct < rs.data.ListProduct.length; indexProduct++) {
+                            const item = rs.data.ListProduct[indexProduct];
+                            $('#list-product').append(`<tr>
+                                        <td><div class="product-thumbnail" style="background-image:url(${item.AnhDaiDien});"></div></td>
+                                        <td>
+                                            <div class="product-info">
+                                                <div class="product-name">${item.TenSanPham}</div>
+                                                <div class="product-price">
+                                                    <label>Giá</label>
+                                                    <div>${NumberFormat(item.Gia)}</div >
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" data-id="${item.SanPhamId}" >
+                                                <button type="button" class="btn btn-tone btn-warning" onclick="Detail(this);">
+                                                    <i class="anticon anticon-edit "></i>
+                                                </button>
+                                                <button type="button" class="btn  btn-tone ${item.DangKichHoat === true ? 'btn-danger' : 'btn-success'}" data-status="${item.DangKichHoat}" data-toggle="tooltip" data-placement="top" title="${item.DangKichHoat === true ? 'Ngừng bán' : 'Bắt đầu bán'}" onclick="ChangeStatus(this);">
+                                                    <i class="anticon ${item.DangKichHoat === true ? 'anticon-poweroff' : 'anticon-play-circle'} "></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>`);
+                        }
+                    }
+
+                    if (rs.data.TotalPage > 0) {
+                        $('#pagination ul').html('');
+                        for (let indexPage = 1; indexPage <= rs.data.TotalPage; indexPage++) {
+                            $('#pagination ul').append(`<li class=""><button class="btn btn-primary btn-tone" onclick="LoadData(${indexPage});">${indexPage}</button></li>`);
+                        }
+                    }
+                }
+            });
+        }
+
+        var search_keyWord_OnKeypress = function (event) {
+            if (event.keyCode === 13) LoadData();
+        }
+
+        var Detail = function (el) {
+            window.location.href = '/admin/manageproduct/detail?id=' + $(el).closest('div').data('id');
+        }
+        var CreateProduct = function () {
+            window.location.href = '/admin/manageproduct/detail';
+        }
+        var ChangeStatus = function (el) {
+
+            const isActive = $(el).data('status');
+            const sanPhamId = $(el).closest('div').data('status');
+            let url = '/admin/manageproduct/activeproduct?id=' + sanPhamId;
+            if (isActive === true) url = '/admin/manageproduct/deactiveproduct?id=' + sanPhamId;
+            $.get(url, function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    $(el).data('status', !isActive);
+                    if (isActive === true) {
+                        $(el).removeClass('btn-danger');
+                        $(el).addClass('btn-success');
+                        $(el).find('i').removeClass('anticon-poweroff');
+                        $(el).find('i').addClass('anticon-play-circle');
+                    } else {
+                        $(el).removeClass('btn-success');
+                        $(el).addClass('btn-danger');
+                        $(el).find('i').removeClass('anticon-play-circle');
+                        $(el).find('i').addClass('anticon-poweroff');
+                    }
+
+                }
+            });
+
+        }
+
+        InitPage();
+
     </script>
 }
