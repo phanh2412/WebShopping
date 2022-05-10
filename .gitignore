@@ -1,7 +1,7 @@
 .vs
 *.user
-Debug
+**Debug
 bin
-obj
 Publish
 Properties
+**obj
