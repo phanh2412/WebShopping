@@ -32,6 +32,9 @@ namespace WebShopping.Models
 
         public DateTime? NgayTao { get; set; }
 
+        [StringLength(100)]
+        public string MatKhau { get; set; }
+
         public bool? DangHoatDong { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

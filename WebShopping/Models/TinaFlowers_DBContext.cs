@@ -26,11 +26,35 @@ namespace WebShopping.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<anh_san_pham>()
+                .Property(e => e.SanPhamId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<anh_san_pham>()
                 .Property(e => e.TenFileAnh)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<chi_tiet_don_dat_hang>()
+                .Property(e => e.SanPhamId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<chi_tiet_don_dat_hang>()
+                .Property(e => e.DonDatHangId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<chi_tiet_gio_hang>()
+                .Property(e => e.SanPhamId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<chi_tiet_trang_thai_don_dat_hang>()
+                .Property(e => e.DonDatHangId)
                 .IsUnicode(false);
 
             modelBuilder.Entity<chi_tiet_trang_thai_don_dat_hang>()
                 .Property(e => e.TrangThai)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<don_dat_hang>()
+                .Property(e => e.DonDatHangId)
                 .IsUnicode(false);
 
             modelBuilder.Entity<don_dat_hang>()
@@ -45,6 +69,10 @@ namespace WebShopping.Models
                 .Property(e => e.Phone)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<khach>()
+                .Property(e => e.MatKhau)
+                .IsUnicode(false);
+
             modelBuilder.Entity<quan_tri_vien>()
                 .Property(e => e.TaiKhoan)
                 .IsUnicode(false);
@@ -57,6 +85,10 @@ namespace WebShopping.Models
                 .HasMany(e => e.don_dat_hang)
                 .WithOptional(e => e.quan_tri_vien)
                 .HasForeignKey(e => e.NguoiDuyetDonId);
+
+            modelBuilder.Entity<san_pham>()
+                .Property(e => e.SanPhamId)
+                .IsUnicode(false);
 
             modelBuilder.Entity<san_pham>()
                 .Property(e => e.AnhDaiDien)

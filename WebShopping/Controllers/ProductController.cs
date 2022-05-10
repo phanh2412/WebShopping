@@ -7,7 +7,7 @@ using WebShopping.Models;
 
 namespace WebShopping.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         // GET: Product
         TinaFlowers_DBContext db = new TinaFlowers_DBContext();
@@ -39,9 +39,10 @@ namespace WebShopping.Controllers
             return View() ;
         }
 
-        public ActionResult Detail()
+        public ActionResult Detail(string id)
         {
-            
+            ViewBag.Product = db.san_pham.FirstOrDefault(x => x.SanPhamId == id);
+            ViewBag.ProductImage = db.anh_san_pham.Where(x => x.SanPhamId == id).ToList();
             return View();
         }
 
