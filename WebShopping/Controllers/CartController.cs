@@ -14,6 +14,9 @@ namespace WebShopping.Controllers
         public ActionResult Index()
         {
             khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
+            gio_hang gioHang = db.gio_hang.FirstOrDefault(x => x.KhachId == nguoidung.KhachId);
+
+            ViewBag.ListItemInCart = db.chi_tiet_gio_hang.Select(x=>new {x.ChiTietGioHangId,x.GioHangId,x.SanPhamId,x.SoLuong,x.san_pham.TenSanPham,x.san_pham.Gia,x.san_pham.AnhDaiDien }).Where(x => x.GioHangId == gioHang.GioHangId).ToList();
 
             return View();
         }
