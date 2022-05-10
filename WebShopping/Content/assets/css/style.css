@@ -8612,14 +8612,14 @@ fieldset:disabled .btn {
   -webkit-box-ordinal-group: 2 !important;
   -webkit-order: 1 !important;
       -ms-flex-order: 1 !important;
-          order: 1 !important;
+          order: 2 !important;
 }
 
 .order-2 {
   -webkit-box-ordinal-group: 3 !important;
   -webkit-order: 2 !important;
       -ms-flex-order: 2 !important;
-          order: 2 !important;
+          order: 1 !important;
 }
 
 .order-3 {
@@ -17981,7 +17981,7 @@ blockquote .inner-content .user-name:before {
   border-bottom: 1px solid #f1f1f1;
   border-left: 1px solid #f1f1f1;
   border-right: 1px solid #f1f1f1;
-  padding: 25px 30px;
+  padding: 25px 5px;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -18005,9 +18005,10 @@ blockquote .inner-content .user-name:before {
     overflow: hidden;
   margin-bottom: 10px;
   display: block;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     display: -webkit-box;
+    height:50px;
 }
 
 .product-list-item {
