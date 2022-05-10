@@ -49,5 +49,10 @@ namespace WebShopping.Areas.Admin.Controllers
                 return Error(ex.Message);
             }
         }
+        public ActionResult Logout()
+        {
+            HttpContext.Session["QuanTriVienSession"] = null;
+            return RedirectToAction("Index");
+        }
     }
 }

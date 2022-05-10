@@ -1,0 +1,273 @@
+@model string
+@{
+    ViewBag.Title = "Detail";
+}
+
+@section styles{
+    <style>
+        .product-form {
+        }
+
+            .product-form .product-general {
+                display: flex;
+                flex-direction: row;
+            }
+
+                .product-form .product-general .product-thumbnail {
+                    padding-right: 15px;
+                    padding-bottom: 15px;
+                }
+
+                    .product-form .product-general .product-thumbnail .preview {
+                        width: 300px;
+                        height: 300px;
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        border: .5px solid #e9e9e9;
+                        border-radius: 5px;
+                        background-image: url('/Content/assets/images/add-photo.png');
+                    }
+
+                .product-form .product-general .product-info {
+                    flex: 1;
+                }
+
+            .product-form .info {
+                padding-bottom: 15px;
+            }
+
+                .product-form .info .label {
+                }
+
+                .product-form .info .input {
+                }
+
+                    .product-form .info .input input, .product-form .info .input select, .product-form .info .input textarea {
+                    }
+
+            .product-form .product-images {
+                padding: 15px;
+                border: .5px solid #e9e9e9;
+                border-radius: 5px;
+                position: relative;
+            }
+
+                .product-form .product-images ul {
+                    list-style: none;
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    flex-wrap: wrap;
+                }
+
+                    .product-form .product-images ul li {
+                        padding: 0 10px 10px 0;
+                    }
+
+                        .product-form .product-images ul li div {
+                            width: 100px;
+                            height: 100px;
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            border: .5px solid #e9e9e9;
+                            border-radius: 5px;
+                        }
+
+                            .product-form .product-images ul li div.add-more-image {
+                                background-image: url(/Content/assets/images/add-photo.png);
+                            }
+
+                        .product-form .product-images ul li.image-item > div {
+                            position: relative;
+                        }
+
+                            .product-form .product-images ul li.image-item > div .preview {
+                            }
+
+                            .product-form .product-images ul li.image-item > div a {
+                                position: absolute;
+                                top: -5px;
+                                right: -5px;
+                                color: white;
+                                display: flex;
+                                width: 20px;
+                                height: 20px;
+                                align-items: center;
+                                justify-content: center;
+                                background-color: #e34e4e;
+                                border-radius: 20px;
+                                cursor: pointer;
+                            }
+
+            .product-form a.save-product {
+            }
+    </style>
+}
+<div class="product-form">
+    <input type="hidden" id="SanPhamId" value="@Model" />
+    <div class="product-general">
+        <div class="product-thumbnail">
+            <div class="preview" style="" onclick="ThumbnailChange(this);"></div>
+            <input type="file" style="display:none;" onchange="ThumbnailChange_OnChange(this);" />
+            <input type="hidden" id="AnhDaiDien" />
+        </div>
+        <div class="product-info">
+            <div class="info">
+                <div class="label">Tên sản phẩm</div>
+                <div class="input">
+                    <input class="form-control" id="TenSanPham" />
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="label">Danh mục</div>
+                <div class="input">
+                    <select class="form-control" id="DanhMucSanPhamId"></select>
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="label">Giá</div>
+                <div class="input">
+                    <input type="number" class="form-control" id="Gia" />
+                </div>
+            </div>
+            <div class="info">
+                <button class="btn btn-success btn-tone m-r-5" onclick="SaveProduct();">Lưu</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="product-description">
+        <div class="info">
+            <div class="label">Mô tả sản phẩm</div>
+            <div class="input">
+                <textarea class="form-control" id="MoTa" rows="7"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-images">
+        <div style=" position: absolute; top: -10px; background-color: #f9fbfd; padding: 0 10px;">Ảnh sản phẩm</div>
+        <ul>
+            <li class="add">
+                <div onclick="AddMoreProductImage(this);" class="add-more-image"></div>
+                <input type="file" style="display:none;" onchange="AddMoreProductImage_OnChange(this);" />
+            </li>
+
+
+
+        </ul>
+    </div>
+
+
+</div>
+<div class="notification-toast top-right" id="notification-toast"></div>
+
+@section scripts{
+    <script>
+        let lsImageDelete = [];
+
+        var InitPage = function () {
+            $.get('/admin/manageproduct/GetListProductCategory', function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    if (rs.data.length > 0) {
+                        $('#DanhMucSanPhamId').html('');
+                        $('#DanhMucSanPhamId').append(`<option seleted value="${rs.data[0].DanhMucSanPhamId}">${rs.data[0].TenDanhMucSanPham}</option>`);
+                        for (let indexDanhMuc = 1; indexDanhMuc < rs.data.length; indexDanhMuc++) {
+                            $('#DanhMucSanPhamId').append(`<option seleted value="${rs.data[indexDanhMuc].DanhMucSanPhamId}">${rs.data[indexDanhMuc].TenDanhMucSanPham}</option>`);
+                        }
+                    }
+                }
+            })
+        }
+        InitPage();
+
+        var ThumbnailChange = function (el) {
+            $(el).siblings('[type=file]').click();
+        }
+
+        var ThumbnailChange_OnChange = function (el) {
+            let reader = new FileReader();
+            reader.onloadend = function (e) {
+                $('#AnhDaiDien').val(e.currentTarget.result.substring(e.currentTarget.result.indexOf(',') + 1, e.currentTarget.result.length));
+                $(el).siblings('.preview').css('background-image', 'url(' + e.currentTarget.result + ')')
+            }
+
+            reader.readAsDataURL(el.files[0])
+        }
+
+        var DeleteImageItem = function (el) {
+            const id = $(el).data('id');
+            if (id !== '' && id !== null && typeof id !== 'undefined') {
+                lsImageDelete.push(id);
+            }
+            $(el).closest('li').remove();
+        }
+
+        var AddMoreProductImage = function (el) {
+            $(el).siblings('[type=file]').click();
+        }
+        var AddMoreProductImage_OnChange = function (el) {
+            let reader = new FileReader();
+            reader.onloadend = function (e) {
+                $(el).closest('ul').append(`<li class="image-item">
+                        <div>
+                            <div class="preview" style="background-image: url(${e.currentTarget.result});"></div>
+                            <input type="hidden" value="${e.currentTarget.result.substring(e.currentTarget.result.indexOf(',') + 1, e.currentTarget.result.length)}"/>
+                            <a onclick="DeleteImageItem(this);"><i class="anticon anticon-minus"></i></a>
+                        </div>
+                    </li>`);
+
+            };
+
+            reader.readAsDataURL(el.files[0])
+        }
+
+        var SaveProduct = function () {
+            let model = {
+                SanPhamId: $('#SanPhamId').val(),
+                TenSanPham: $('#TenSanPham').val(),
+                DanhMucSanPhamId: $('#DanhMucSanPhamId').val(),
+                Gia: $('#Gia').val(),
+                AnhDaiDien_Base64: $('#AnhDaiDien').val(),
+                MoTa: $('#MoTa').val(),
+                Tag: '',
+                AnhSanPham: [],
+                AnhSanPhamXoa: [],
+            }
+            if (GetObjectProperty(model, 'SanPhamId') === '') {
+                let lsImages = $('.product-images ul li.image-item input');
+                for (let indexImage = 0; indexImage < lsImages.length; indexImage++) {
+                    if ($(lsImages[indexImage]).val() !== '') {
+                        model.AnhSanPham.push($(lsImages[indexImage]).val());
+                    }
+                }
+            }
+            
+
+
+            if (GetObjectProperty(model, 'TenSanPham') === '') { ErrorToast('Tên sản phẩm không được để trống'); return; }
+            if (GetObjectProperty(model, 'Gia') === '') { ErrorToast('Giá sản phẩm không được để trống'); return; }
+            if (GetObjectProperty(model, 'AnhDaiDien_Base64') === '') { ErrorToast('Ảnh đại diện cho sản phẩm không được để trống'); return; }
+            if (model.AnhSanPham.length <= 0) { ErrorToast('Hãy chọn ít nhất 1 ảnh cho sản phẩm'); return; }
+
+            model.Tag = RemoveVietnameseTones(model.TenSanPham);
+
+            $.post('/admin/manageproduct/CreateProduct', model, function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) {
+                    if (GetObjectProperty(rs, 'message') !== '') ErrorToast(GetObjectProperty(rs, 'message'));
+                    return;
+                }
+
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    window.location.href = '/admin/manageproduct';
+                }
+            });
+        }
+
+    </script>
+}

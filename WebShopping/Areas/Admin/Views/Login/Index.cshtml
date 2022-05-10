@@ -38,14 +38,14 @@
                                             <label class="font-weight-semibold" for="userName">Tài khoản:</label>
                                             <div class="input-affix">
                                                 <i class="prefix-icon anticon anticon-user"></i>
-                                                <input type="text" class="form-control" id="userName" placeholder="Số điện thoại hoặc Email">
+                                                <input type="text" class="form-control" id="userName" onkeypress="Account_OnKeyPress(event);" placeholder="Số điện thoại hoặc Email">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="font-weight-semibold" for="password">Mật khẩu:</label>
                                             <div class="input-affix m-b-10">
                                                 <i class="prefix-icon anticon anticon-lock"></i>
-                                                <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+                                                <input type="password" class="form-control" id="password" onkeypress="Password_onKeyPress(event);" placeholder="Mật khẩu">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -70,7 +70,7 @@
     <script src="/Content/jquery-3.6.0.min.js"></script>
     <!-- Core Vendors JS -->
     <script src="/Content/AdminAssets/js/vendors.min.js"></script>
-    <script src="~/Scripts/helper.js"></script>
+    <script src="/Scripts/helper.js"></script>
     <!-- page js -->
     <!-- Core JS -->
     <script src="/Content/AdminAssets/js/app.min.js"></script>
@@ -92,6 +92,15 @@
             });
 
         }
+
+        var Account_OnKeyPress = function (e) {
+            if (e.keyCode === 13) $('#password').focus();
+        }
+
+        var Password_onKeyPress = function (e) {
+            if (e.keyCode === 13) Login();
+        }
+
     </script>
 </body>
 
