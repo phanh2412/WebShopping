@@ -11,6 +11,7 @@ namespace WebShopping.Models
         [Key]
         public long ChiTietTrangThaiDonDatHangId { get; set; }
 
+        [StringLength(36)]
         public string DonDatHangId { get; set; }
 
         [StringLength(20)]

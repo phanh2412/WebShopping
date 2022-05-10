@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace WebShopping.Providers
@@ -29,6 +30,35 @@ namespace WebShopping.Providers
                 return false;
             }
 
+        }
+
+        public static string CreateMD5(string input)
+        {
+            // Use input string to calculate MD5 hash
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convert the byte array to hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString().ToLower();
+            }
+        }
+        public static string EncodePassword(string userId, string password)
+        {
+            try
+            {
+                userId = CreateMD5(userId);
+                password = CreateMD5(userId[userId.Length - 1] + password + userId[0]);
+                password = CreateMD5(userId[userId.Length - 2] + password + userId[1]);
+                return password;
+            }
+            catch (Exception ex) { return null; }
         }
     }
 }

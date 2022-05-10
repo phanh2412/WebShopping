@@ -554,36 +554,6 @@
 		}
 		
 	
-	/*------------------------------------
-	Toolbar Button
-	------------------------------------- */
-	var $overlay = $('.global-overlay');
-	$('.toolbar-btn').on('click', function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-		var $this = $(this);
-		var target = $this.attr('href');
-		var prevTarget = $this.parent().siblings().children('.toolbar-btn').attr('href');
-		$(target).toggleClass('open');
-		$(prevTarget).removeClass('open');
-		$($overlay).addClass('overlay-open');
-	});
-
-	/*----------------------------------------*/
-	/*  Click on Documnet
-/*----------------------------------------*/
-	var $body = $('.global-overlay');
-
-	$body.on('click', function (e) {
-		var $target = e.target;
-		var dom = $('.main-wrapper').children();
-
-		if (!$($target).is('.toolbar-btn') && !$($target).parents().is('.open')) {
-			dom.removeClass('open');
-			dom.find('.open').removeClass('open');
-			$overlay.removeClass('overlay-open');
-		}
-	});
 
 	/*----------------------------------------*/
 	/*  Close Button Actions
@@ -646,9 +616,9 @@
 	$(function () {
 		sliderrange.slider({
 			range: true,
-			min: 10,
-			max: 850,
-			step: 10,
+			min: 50000,
+			max: 50000000,
+			step: 50000,
 			values: [0, 1000],
 			slide: function (event, ui) {
 				amountprice.val('$' + ui.values[0] + ' - $' + ui.values[1]);

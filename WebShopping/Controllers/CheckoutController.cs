@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace WebShopping.Controllers
 {
-    public class CheckoutController : Controller
+    public class CheckoutController : BaseController
     {
         // GET: Checkout
         public ActionResult Index()

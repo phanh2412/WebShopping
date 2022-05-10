@@ -11,8 +11,10 @@ namespace WebShopping.Models
         [Key]
         public long ChiTietDonDatHangId { get; set; }
 
+        [StringLength(36)]
         public string SanPhamId { get; set; }
 
+        [StringLength(36)]
         public string DonDatHangId { get; set; }
 
         public int? SoLuongMua { get; set; }

@@ -7,7 +7,7 @@ using WebShopping.Models;
 
 namespace WebShopping.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         TinaFlowers_DBContext db = new TinaFlowers_DBContext();
         // GET: Home
