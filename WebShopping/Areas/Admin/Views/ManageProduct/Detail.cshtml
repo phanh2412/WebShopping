@@ -1,6 +1,7 @@
-@model string
+﻿
 @{
     ViewBag.Title = "Detail";
+    string SanPhamId = (string)ViewBag.SanPhamId;
 }
 
 @section styles{
@@ -106,7 +107,7 @@
     </style>
 }
 <div class="product-form">
-    <input type="hidden" id="SanPhamId" value="@Model" />
+    <input type="hidden" id="SanPhamId" value="@SanPhamId" />
     <div class="product-general">
         <div class="product-thumbnail">
             <div class="preview" style="" onclick="ThumbnailChange(this);"></div>
@@ -182,7 +183,42 @@
                         }
                     }
                 }
-            })
+            });
+
+            const sanPhamId = $('#SanPhamId').val();
+            if (sanPhamId !== '' && sanPhamId !== null && typeof sanPhamId !== 'undefined') {
+                $.get('/admin/manageproduct/GetProductById?id=' + sanPhamId, function (rs) {
+                    if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) {
+                        if (GetObjectProperty(rs, 'message') !== '') ErrorToast(GetObjectProperty(rs, 'message'));
+                        return;
+                    }
+                    if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                        console.log(rs.data);
+                        $('#AnhDaiDien').siblings('.preview').css('background-image', 'url(' + GetObjectProperty(rs.data.product, 'AnhDaiDien') + ')');
+                        $('#DanhMucSanPhamId').val(GetObjectProperty(rs.data.product, 'DanhMucSanPhamId'));
+                        $('#Gia').val(GetObjectProperty(rs.data.product, 'Gia'));
+                        $('#TenSanPham').val(GetObjectProperty(rs.data.product, 'TenSanPham'));
+                        $('#MoTa').val(GetObjectProperty(rs.data.product, 'MoTa'));
+
+                        if (GetObjectProperty(rs.data, 'productImages') !== '') {
+                            if (rs.data.productImages.length > 0) {
+                                for (let indexImage = 0; indexImage < rs.data.productImages.length; indexImage++) {
+                                    const image = rs.data.productImages[indexImage];
+                                    $('.product-form .product-images ul').append(`<li class="image-item">
+                                <div>
+                                    <div class="preview" style="background-image: url(${image.TenFileAnh});"></div>
+                                    <input type="hidden" value=""/>
+                                    <a data-id="${image.AnhSanPhamId}" onclick="DeleteImageItem(this);"><i class="anticon anticon-minus"></i></a>
+                                </div>
+                            </li>`);
+                                }
+                            }
+                        }
+
+
+                    }
+                });
+            }
         }
         InitPage();
 
@@ -215,12 +251,12 @@
             let reader = new FileReader();
             reader.onloadend = function (e) {
                 $(el).closest('ul').append(`<li class="image-item">
-                        <div>
-                            <div class="preview" style="background-image: url(${e.currentTarget.result});"></div>
-                            <input type="hidden" value="${e.currentTarget.result.substring(e.currentTarget.result.indexOf(',') + 1, e.currentTarget.result.length)}"/>
-                            <a onclick="DeleteImageItem(this);"><i class="anticon anticon-minus"></i></a>
-                        </div>
-                    </li>`);
+                                <div>
+                                    <div class="preview" style="background-image: url(${e.currentTarget.result});"></div>
+                                    <input type="hidden" value="${e.currentTarget.result.substring(e.currentTarget.result.indexOf(',') + 1, e.currentTarget.result.length)}"/>
+                                    <a onclick="DeleteImageItem(this);"><i class="anticon anticon-minus"></i></a>
+                                </div>
+                            </li>`);
 
             };
 
@@ -237,27 +273,35 @@
                 MoTa: $('#MoTa').val(),
                 Tag: '',
                 AnhSanPham: [],
-                AnhSanPhamXoa: [],
+                AnhSanPhamXoa: lsImageDelete,
             }
-            if (GetObjectProperty(model, 'SanPhamId') === '') {
-                let lsImages = $('.product-images ul li.image-item input');
-                for (let indexImage = 0; indexImage < lsImages.length; indexImage++) {
-                    if ($(lsImages[indexImage]).val() !== '') {
-                        model.AnhSanPham.push($(lsImages[indexImage]).val());
-                    }
+
+            let lsImages = $('.product-images ul li.image-item input');
+            for (let indexImage = 0; indexImage < lsImages.length; indexImage++) {
+                if ($(lsImages[indexImage]).val() !== '') {
+                    model.AnhSanPham.push($(lsImages[indexImage]).val());
                 }
             }
-            
-
 
             if (GetObjectProperty(model, 'TenSanPham') === '') { ErrorToast('Tên sản phẩm không được để trống'); return; }
             if (GetObjectProperty(model, 'Gia') === '') { ErrorToast('Giá sản phẩm không được để trống'); return; }
-            if (GetObjectProperty(model, 'AnhDaiDien_Base64') === '') { ErrorToast('Ảnh đại diện cho sản phẩm không được để trống'); return; }
-            if (model.AnhSanPham.length <= 0) { ErrorToast('Hãy chọn ít nhất 1 ảnh cho sản phẩm'); return; }
-
+            if (GetObjectProperty(model, 'AnhDaiDien_Base64') === '' && GetObjectProperty(model, 'SanPhamId') === '') { ErrorToast('Ảnh đại diện cho sản phẩm không được để trống'); return; }
             model.Tag = RemoveVietnameseTones(model.TenSanPham);
 
-            $.post('/admin/manageproduct/CreateProduct', model, function (rs) {
+            let url = '/admin/manageproduct/CreateProduct';
+            if (GetObjectProperty(model, 'SanPhamId') !== '') {
+                url = '/admin/manageproduct/UpdateProduct';
+                console.log(model); 
+                //Kiem tra anh san pham co bi xoa het khong
+                const countProductImage = $('.product-form .product-images li.image-item').length;
+                if (countProductImage <= 0) {
+                    ErrorToast('Hãy chọn ít nhất 1 ảnh cho sản phẩm'); return;
+                }
+            } else {
+                if (model.AnhSanPham.length <= 0) { ErrorToast('Hãy chọn ít nhất 1 ảnh cho sản phẩm'); return; }
+            }
+
+            $.post(url, model, function (rs) {
                 if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) {
                     if (GetObjectProperty(rs, 'message') !== '') ErrorToast(GetObjectProperty(rs, 'message'));
                     return;
