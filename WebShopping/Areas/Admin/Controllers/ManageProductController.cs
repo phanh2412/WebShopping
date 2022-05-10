@@ -18,9 +18,9 @@ namespace WebShopping.Areas.Admin.Controllers
             return View();
         }
 
-        public ActionResult Detail(string id)
+        public ActionResult Detail(string id="")
         {
-            return View(id);
+            return View("~/Areas/Admin/Views/ManageProduct/Detail.cshtml",id);
         }
 
         [HttpGet]
@@ -45,20 +45,28 @@ namespace WebShopping.Areas.Admin.Controllers
             }
         }
         [HttpGet]
-        public ActionResult GetListProduct(int? danhMucSanPhamId, string keyword, bool? dangKichHoat)
+        public ActionResult GetListProduct(int? danhMucSanPhamId, string keyword, bool? dangKichHoat, int? page)
         {
             try
             {
+                if (!page.HasValue) page = 1;
+                int skip = (page.Value - 1) * Constant.ADMIN_PAGE_SIZE;
+                var lsProduct = db.san_pham.Where(x =>
+                        (!danhMucSanPhamId.HasValue || x.DanhMucSanPhamId == danhMucSanPhamId.Value) &&
+                        (string.IsNullOrEmpty(keyword) || x.Tag.ToLower().Contains(keyword.ToLower())) &&
+                        (!dangKichHoat.HasValue || x.DangKichHoat == dangKichHoat))
+                    .OrderByDescending(x => x.NgayTao)
+                    .Select(x => new { x.SanPhamId, x.TenSanPham, x.AnhDaiDien, x.Gia, x.DangKichHoat })
+                    .Skip(skip)
+                    .Take(Constant.ADMIN_PAGE_SIZE)
+                    .ToList();
+                int TotalPage = db.san_pham.Where(x =>
+                       (!danhMucSanPhamId.HasValue || x.DanhMucSanPhamId == danhMucSanPhamId.Value) &&
+                       (string.IsNullOrEmpty(keyword) || x.Tag.ToLower().Contains(keyword.ToLower())) &&
+                       (!dangKichHoat.HasValue || x.DangKichHoat == dangKichHoat)).Count();
+                TotalPage = (int)Math.Ceiling((decimal)TotalPage / Constant.ADMIN_PAGE_SIZE);
 
-                var lsProduct = (from p in db.san_pham
-                                 where (
-                                     (!danhMucSanPhamId.HasValue || p.DanhMucSanPhamId == danhMucSanPhamId.Value) &&
-                                     (string.IsNullOrEmpty(keyword) || p.Tag.Contains(keyword)) &&
-                                     (!dangKichHoat.HasValue || p.DangKichHoat == dangKichHoat.Value)
-                                 )
-                                 select new { p.SanPhamId, p.TenSanPham, p.AnhDaiDien, p.Gia, p.danh_muc_san_pham.TenDanhMucSanPham }).ToList();
-
-                return Success(lsProduct);
+                return Success(new { ListProduct = lsProduct, TotalPage = TotalPage });
             }
             catch (Exception ex)
             {
@@ -213,7 +221,7 @@ namespace WebShopping.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteProduct(string id)
+        public ActionResult DeactiveProduct(string id)
         {
             try
             {
@@ -225,21 +233,49 @@ namespace WebShopping.Areas.Admin.Controllers
 
                     sanPham.DangKichHoat = false;
 
-                    danh_muc_san_pham danhMucSanPham = db.danh_muc_san_pham.FirstOrDefault(x=>x.DanhMucSanPhamId == sanPham.DanhMucSanPhamId);
-                    if(danhMucSanPham != null)
-                    {
-                        danhMucSanPham.SoLuongSanPham -= 1;
-                    }
+                    danh_muc_san_pham danhMucSanPham = db.danh_muc_san_pham.FirstOrDefault(x => x.DanhMucSanPhamId == sanPham.DanhMucSanPhamId);
+                    if (danhMucSanPham != null) { danhMucSanPham.SoLuongSanPham -= 1; }
 
                     db.SaveChanges();
                     transaction.Commit();
                     return Success();
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) { return Error(ex.Message); }
+        }
+        [HttpGet]
+        public ActionResult ActiveProduct(string id)
+        {
+            try
             {
-                return Error(ex.Message);
+                if (string.IsNullOrEmpty(id)) return Error(WebShopping.Models.JsonResult.Message.PRODUCT_NOT_FOUND);
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    san_pham sanPham = db.san_pham.FirstOrDefault(x => x.SanPhamId == id);
+                    if (sanPham == null) return Error(WebShopping.Models.JsonResult.Message.PRODUCT_NOT_FOUND);
+
+                    sanPham.DangKichHoat = true;
+
+                    danh_muc_san_pham danhMucSanPham = db.danh_muc_san_pham.FirstOrDefault(x => x.DanhMucSanPhamId == sanPham.DanhMucSanPhamId);
+                    if (danhMucSanPham != null) { danhMucSanPham.SoLuongSanPham += 1; }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                    return Success();
+                }
             }
+            catch (Exception ex) { return Error(ex.Message); }
+        }
+
+        [HttpGet]
+        public ActionResult GetListProductCategory()
+        {
+            try
+            {
+                var lsProductCategory = db.danh_muc_san_pham.Select(x => new { x.DanhMucSanPhamId, x.TenDanhMucSanPham }).OrderBy(x => x.TenDanhMucSanPham).ToList();
+                return Success(lsProductCategory);
+            }
+            catch (Exception ex) { return Error(ex.Message); }
         }
     }
 }
