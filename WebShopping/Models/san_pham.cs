@@ -59,7 +59,7 @@ namespace WebShopping.Models
         public string AnhDaiDien_Base64 { get; set; }
         public string MoTa { get; set; }
         public string Tag { get; set; }
-        public List<string> AnhSanPham { get; set; }
-        public List<int> AnhSanPhamXoa { get; set; }
+        public string[] AnhSanPham { get; set; }
+        public int[] AnhSanPhamXoa { get; set; }
     }
 }
