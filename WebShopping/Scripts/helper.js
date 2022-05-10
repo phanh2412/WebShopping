@@ -8,6 +8,7 @@ var GetObjectProperty = function (obj, prop, defaultValue = '') {
     if (obj[prop] === '' || obj[prop] === null || typeof obj[prop] === 'undefined') return defaultValue;
     return obj[prop];
 };
+
 var NumberFormat = function (num, joinChar = ',') { try { const numString = num + ''; var numberPart = numString.split('.'); var s = numberPart[0]; var arr = []; while (s.length > 0) { if (s.length > 3) { arr.push(s.slice(s.length - 3, s.length)); s = s.slice(0, s.length - 3); } else { arr.push(s); s = ''; } } return arr.reverse().join(joinChar) + (numberPart.length > 1 ? '.' + numberPart[1] : ''); } catch (ex) { return ''; } }
 var ErrorToast = function(message = '') {
     var toastHTML = `<div class="toast fade hide" data-delay="3000" style="background-color: #e5656526;border: none;">
