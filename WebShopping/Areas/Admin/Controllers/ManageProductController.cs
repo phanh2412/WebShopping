@@ -18,9 +18,10 @@ namespace WebShopping.Areas.Admin.Controllers
             return View();
         }
 
-        public ActionResult Detail(string id="")
+        public ActionResult Detail(string id)
         {
-            return View("~/Areas/Admin/Views/ManageProduct/Detail.cshtml",id);
+            ViewBag.SanPhamId = id;
+            return View();
         }
 
         [HttpGet]
@@ -31,7 +32,7 @@ namespace WebShopping.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(id)) return Error(WebShopping.Models.JsonResult.Message.PRODUCT_NOT_FOUND);
                 var product = (from p in db.san_pham
                                where p.SanPhamId == id
-                               select new { p.SanPhamId, p.TenSanPham, p.Gia, p.MoTa, p.AnhDaiDien, p.danh_muc_san_pham.TenDanhMucSanPham }).FirstOrDefault();
+                               select new { p.SanPhamId,p.DanhMucSanPhamId, p.TenSanPham, p.Gia, p.MoTa, p.AnhDaiDien, p.danh_muc_san_pham.TenDanhMucSanPham }).FirstOrDefault();
 
                 if (product == null) return Error(WebShopping.Models.JsonResult.Message.PRODUCT_NOT_FOUND);
 
@@ -100,9 +101,9 @@ namespace WebShopping.Areas.Admin.Controllers
                         sanPham.AnhDaiDien = Constant.PRODUCT_THUMBNAIL_URL + filename;
                     }
 
-                    if (model.AnhSanPham.Count > 0)
+                    if (model.AnhSanPham.Length > 0)
                     {
-                        for (int indexImage = 0; indexImage < model.AnhSanPham.Count; indexImage++)
+                        for (int indexImage = 0; indexImage < model.AnhSanPham.Length; indexImage++)
                         {
                             string filename = Guid.NewGuid().ToString() + ".jpg";
                             var path = System.Web.HttpContext.Current.Server.MapPath(Constant.PRODUCT_IMAGE_PATH + filename);
@@ -177,9 +178,9 @@ namespace WebShopping.Areas.Admin.Controllers
                         sanPham.AnhDaiDien = Constant.PRODUCT_THUMBNAIL_URL + filename;
                     }
 
-                    if (model.AnhSanPham.Count > 0)
+                    if (model.AnhSanPham != null && model.AnhSanPham.Length > 0)
                     {
-                        for (int indexImage = 0; indexImage < model.AnhSanPham.Count; indexImage++)
+                        for (int indexImage = 0; indexImage < model.AnhSanPham.Length; indexImage++)
                         {
                             string filename = Guid.NewGuid().ToString() + ".jpg";
                             var path = System.Web.HttpContext.Current.Server.MapPath(Constant.PRODUCT_IMAGE_PATH + filename);
@@ -192,11 +193,12 @@ namespace WebShopping.Areas.Admin.Controllers
                         }
                     }
 
-                    if (model.AnhSanPhamXoa.Count > 0)
+                    if (model.AnhSanPhamXoa != null && model.AnhSanPhamXoa.Length > 0)
                     {
-                        for (int indexImage = 0; indexImage < model.AnhSanPhamXoa.Count; indexImage++)
+                        for (int indexImage = 0; indexImage < model.AnhSanPhamXoa.Length; indexImage++)
                         {
-                            anh_san_pham anhSanPham = db.anh_san_pham.FirstOrDefault(x => x.AnhSanPhamId == model.AnhSanPhamXoa[indexImage]);
+                            int anhSanPhamXoaId = model.AnhSanPhamXoa[indexImage];
+                            anh_san_pham anhSanPham = db.anh_san_pham.FirstOrDefault(x => x.AnhSanPhamId == anhSanPhamXoaId);
                             if (anhSanPham != null)
                             {
                                 db.anh_san_pham.Remove(anhSanPham);
