@@ -1,0 +1,249 @@
+﻿@using WebShopping.Models
+@{
+    ViewBag.Title = "Order";
+    List<don_dat_hang> lsOrder = (List<don_dat_hang>)ViewBag.ListOrder;
+}
+@section styles{
+    <style>
+        #order-detail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: #00000075;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            #order-detail .order-detail {
+                display: flex;
+                width: 800px;
+                background-color: white;
+                padding: 30px;
+                border-radius: 10px;
+                flex-direction: column;
+                height: 600px;
+            }
+
+                #order-detail .order-detail ul {
+                    height: 600px;
+                    overflow-y: auto;
+                    flex: 1;
+                }
+
+                    #order-detail .order-detail ul li {
+                    }
+
+                        #order-detail .order-detail ul li > div {
+                            display: flex;
+                            align-items: center;
+                            flex-direction: row;
+                            padding: 10px 0;
+                            border-bottom: .5px solid #f3f3f3;
+                        }
+
+                            #order-detail .order-detail ul li > div > .thumbnail {
+                                width: 80px;
+                                height: 80px;
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-size: cover;
+                            }
+
+                            #order-detail .order-detail ul li > div > .product-info {
+                                padding-left: 10px;
+                                display:flex;
+                                flex-direction:column;
+                                flex:1;
+                                font-size:13px;
+                            }
+
+                                #order-detail .order-detail ul li > div > .product-info .name {
+                                    font-size: 17px;
+                                }
+
+                                #order-detail .order-detail ul li > div > .product-info .quantity {
+                                }
+
+                                #order-detail .order-detail ul li > div > .product-info .price {
+                                }
+
+                            #order-detail .order-detail ul li > div > .total {
+                            }
+                #order-detail .order-detail .action {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                    #order-detail .order-detail .action .close {
+                        display: flex;
+                        cursor: pointer;
+                    }
+    </style>
+}
+
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" style="background-image: url('/Content/assets/images/banner/bg2.jpg')">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Đơn đặt hàng</h2>
+                        <ul>
+                            <li>
+                                <a href="/">Trang chủ <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Đơn hàng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="javascript:void(0)">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:100px;">Mã đơn</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @{
+                                        foreach (var item in lsOrder)
+                                        {
+                                            <tr>
+                                                <td><button class="btn btn-info" data-id="@item.DonDatHangId" onclick="ShowDetail(this)">@item.DonDatHangId</button></td>
+                                                <td>@(item.TongTien.HasValue ? item.TongTien.Value.ToString("#,##0") : "" )</td>
+                                                <td>@(item.NgayTao.HasValue ? item.NgayTao.Value.ToString("dd/MM/yyyy") : "")</td>
+                                                <td>
+                                                    @{
+                                                        if (item.TrangThai == Constant.TrangThaiDonDatHang.CHO_XAC_NHAN)
+                                                        {
+                                                            <span>Chờ xác nhận</span>
+                                                        }
+                                                        else if (item.TrangThai == Constant.TrangThaiDonDatHang.DANG_XU_LY)
+                                                        {
+                                                            <span>Đang xử lý</span>
+                                                        }
+                                                        else if (item.TrangThai == Constant.TrangThaiDonDatHang.DA_THANH_TOAN)
+                                                        {
+                                                            <span>Đang xử lý</span>
+                                                        }
+                                                        else if (item.TrangThai == Constant.TrangThaiDonDatHang.HOAN_THANH)
+                                                        {
+                                                            <span>Hoàn thành</span>
+                                                        }
+                                                        else if (item.TrangThai == Constant.TrangThaiDonDatHang.CUA_HANG_HUY)
+                                                        {
+                                                            <span>Cửa hàng hủy</span>
+                                                        }
+                                                        else if (item.TrangThai == Constant.TrangThaiDonDatHang.KHACH_HANG_HUY)
+                                                        {
+                                                            <span>Đã hủy</span>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        if (item.TrangThai == Constant.TrangThaiDonDatHang.CHO_XAC_NHAN || item.TrangThai == Constant.TrangThaiDonDatHang.DANG_XU_LY)
+                                                        {
+                                                            <button data-id="@item.DonDatHangId" onclick="Cancel(this);" class="btn btn-danger">Hủy</button>
+                                                        }
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="" id="order-detail" style="display:none;">
+    <div class="order-detail">
+        <ul>
+            <li>
+                <div>
+                    <div class="thumbnail"></div>
+                    <div class="product-info">
+                        <div class="name"></div>
+                        <div class="quantity"></div>
+                        <div class="price"></div>
+                    </div>
+
+                    <div class="total"></div>
+                </div>
+            </li>
+        </ul>
+        <div class="action">
+            <a class="close" onclick="CloseOrderDetail(this);">Đóng</a>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var Cancel = function (el) {
+            const id = $(el).data('id');
+            $.get('/user/CancelOrder?id=' + id, function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) {
+                    if (GetObjectProperty(rs, 'message') !== '') alert(GetObjectProperty(rs, 'message'));
+                    return;
+                }
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    window.location.reload();
+                }
+            });
+        }
+
+        var CloseOrderDetail = function (el) {
+            $('#order-detail').hide();
+            $('#order-detail .order-detail ul').html('');
+        }
+
+        var ShowDetail = function (el) {
+            const id = $(el).data('id');
+            $.get('/user/GetListOrderDetail?id=' + id, function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    $('#order-detail').css('display', 'flex');
+                    $('#order-detail .order-detail ul').html('');
+                    if (GetObjectProperty(rs, 'data') !== '') {
+                        for (let indexDetail = 0; indexDetail < rs.data.length; indexDetail++) {
+                            const item = rs.data[indexDetail];
+                            $('#order-detail .order-detail ul').append(` <li>
+                    <div>
+                        <div class="thumbnail" style="background-image:url(${item.AnhDaiDien});"></div>
+     <div class="product-info">
+                        <div class="name">${item.TenSanPham}</div>
+                        <div class="quantity">Số lượng mua : ${item.SoLuongMua}</div>
+                        <div class="price">Giá : ${NumberFormat(item.Gia)}</div>
+                    </div>                       
+                        <div class="total">${NumberFormat(item.SoLuongMua * item.Gia)}</div>
+                    </div>
+                </li>`);
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}
