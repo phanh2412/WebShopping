@@ -141,17 +141,20 @@
     <Compile Include="Areas\Admin\Controllers\ManageOrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ManageProductController.cs" />
     <Compile Include="Areas\Admin\Models\AdminSession.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\AdminLoginRequireAttribute.cs" />
+    <Compile Include="Filters\UserLoginRequireAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\anh_san_pham.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\chi_tiet_don_dat_hang.cs" />
     <Compile Include="Models\chi_tiet_gio_hang.cs" />
     <Compile Include="Models\chi_tiet_trang_thai_don_dat_hang.cs" />
@@ -160,8 +163,11 @@
     <Compile Include="Models\gio_hang.cs" />
     <Compile Include="Models\khach.cs" />
     <Compile Include="Models\quan_tri_vien.cs" />
+    <Compile Include="Models\SanPhamPostModel.cs" />
     <Compile Include="Models\san_pham.cs" />
     <Compile Include="Models\TinaFlowers_DBContext.cs" />
+    <Compile Include="Models\UserLoginPost.cs" />
+    <Compile Include="Models\UserRegisterPost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\HelperProvider.cs" />
   </ItemGroup>
@@ -1915,6 +1921,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\AdminBase\" />
     <Folder Include="Areas\Admin\Views\ManageCustomer\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
