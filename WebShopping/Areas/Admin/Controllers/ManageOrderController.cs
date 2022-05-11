@@ -33,7 +33,7 @@ namespace WebShopping.Areas.Admin.Controllers
                     (string.IsNullOrEmpty(status) || x.TrangThai == status)
                 )
                     .Select(x => new { x.DonDatHangId, x.khach.HoVaTen, x.TongTien, x.NgayTao, x.TrangThai })
-                    .OrderBy(x => x.NgayTao)
+                    .OrderByDescending(x => x.NgayTao)
                     .Skip(skip)
                     .Take(Constant.ADMIN_PAGE_SIZE)
                     .ToList();
@@ -53,6 +53,21 @@ namespace WebShopping.Areas.Admin.Controllers
                 return Error(ex.Message);
             }
         }
+
+        [HttpGet]
+        public ActionResult GetOrderById(string id)
+        {
+            try
+            {
+                var order = db.don_dat_hang.Select(x => new { x.DonDatHangId, x.khach.HoVaTen, x.TongTien, x.NgayTao, x.TrangThai }).FirstOrDefault(x => x.DonDatHangId == id);
+                return Success(order);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
+        }
+
         [HttpGet]
         public ActionResult ProcessOrder(string id)
         {
@@ -179,7 +194,7 @@ namespace WebShopping.Areas.Admin.Controllers
                         x.TongTien,
                         x.NgayTao,
                         x.khach.HoVaTen,
-                        DanhSachSanPham = x.chi_tiet_don_dat_hang.Select(z => new { z.ChiTietDonDatHangId, z.SanPhamId,z.san_pham.AnhDaiDien, z.san_pham.TenSanPham, z.SoLuongMua, z.Gia }).ToList()
+                        DanhSachSanPham = x.chi_tiet_don_dat_hang.Select(z => new { z.ChiTietDonDatHangId, z.SanPhamId, z.san_pham.AnhDaiDien, z.san_pham.TenSanPham, z.SoLuongMua, z.Gia }).ToList()
                     }).FirstOrDefault();
                 return Success(order);
             }

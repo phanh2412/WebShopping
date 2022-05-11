@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebShopping.Models;
 using WebShopping.Filters;
+using WebShopping.Providers;
 namespace WebShopping.Controllers
 {
     public class CartController : BaseController
@@ -40,7 +41,7 @@ namespace WebShopping.Controllers
                     donDatHang.TongTien = 0;
                     donDatHang.TrangThai = Constant.TrangThaiDonDatHang.CHO_XAC_NHAN;
                     donDatHang.NgayTao = DateTime.Now;
-                    donDatHang.DonDatHangId = Guid.NewGuid().ToString();
+                    donDatHang.DonDatHangId = HelperProvider.MakeCode();
 
                     for (int index = 0; index < lsChiTietGioHang.Count; index++)
                     {
@@ -60,12 +61,9 @@ namespace WebShopping.Controllers
                         db.chi_tiet_don_dat_hang.Add(chiTIetDonDatHang);
                     }
                     db.don_dat_hang.Add(donDatHang);
-
                     gioHang.TongSanPham = 0;
                     gioHang.TongTien = 0;
-
                     db.chi_tiet_gio_hang.RemoveRange(lsChiTietGioHang);
-
                     db.SaveChanges();
                     transaction.Commit();
 
@@ -85,10 +83,8 @@ namespace WebShopping.Controllers
             {
                 khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
                 if (nguoidung == null) return Error();
-
                 gio_hang gioHang = db.gio_hang.FirstOrDefault(x => x.KhachId == nguoidung.KhachId);
                 if (gioHang == null) return Error();
-
                 return Success(gioHang.TongSanPham);
             }
             catch (Exception ex) { return Error(ex.Message); }

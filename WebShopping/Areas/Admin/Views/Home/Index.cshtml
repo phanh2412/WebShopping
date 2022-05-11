@@ -83,7 +83,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h5>Đơn đặt hàng gần đây</h5>
                     <div>
-                        <a href="javascript:void(0);" class="btn btn-sm btn-default">Xem thêm</a>
+                        <a href="/admin/manageorder/" class="btn btn-sm btn-default">Xem thêm</a>
                     </div>
                 </div>
                 <div class="m-t-30">
@@ -91,36 +91,15 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Mã đơn</th>
+                                    <th style="width:100px;">Mã đơn</th>
                                     <th>Họ và tên khách</th>
-                                    <th>Ngày đặt</th>
-                                    <th>Tổng tiền</th>
-                                    <th>Trạng thái</th>
-                                    <th></th>
+                                    <th style="width:150px;">Ngày đặt</th>
+                                    <th style="width:150px;">Tổng tiền</th>
+                                    <th style="width:150px;">Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody id="list-order-newest">
-                                @*
-        <tr>
-            <td>#5331</td>
-            <td>
-                <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center">
-                        <h6 class="m-l-10 m-b-0">Erin Gonzales</h6>
-                    </div>
-                </div>
-            </td>
-            <td>8 May 2019</td>
-            <td>$137.00</td>
-            <td>
-                <div class="d-flex align-items-center">
-                    <span class="badge badge-success badge-dot m-r-10"></span>
-                    <span>Approved</span>
-                </div>
-            </td>
-            <td><a class="btn btn-default btn-xs">Chi tiết</a></td>
-        </tr>
-                                *@
+                                
                             </tbody>
                         </table>
                     </div>
@@ -164,13 +143,15 @@
                     $('#list-order-newest').html('');
                     for (let indexOrder = 0; indexOrder < rs.data.length; indexOrder++) {
                         let item = rs.data[indexOrder];
+                        item.NgayTao = item.NgayTao.replace('/Date(', '').replace(')/', '');
+                        const orderDate = new Date(parseInt(item.NgayTao));
+                        item.NgayTao = DateStringFormat({ stringDate: orderDate, newFormat: 'dd/mm/yyyy' });
                         $('#list-order-newest').append(`<tr>
 <td>${item.DonDatHangId}</td>
 <td><div class="d-flex align-items-center"><div class="d-flex align-items-center"><h6 class="m-l-10 m-b-0">${item.HoVaTen}</h6></div></div></td>
 <td>${item.NgayTao}</td>
 <td>${NumberFormat(item.TongTien)}</td>
 <td><div class="d-flex align-items-center"><span class="badge badge-success badge-dot m-r-10"></span><span>${Enum.OrderStatus[item.TrangThai]}</span></div></td>
-<td><a href="/admin/manageorder/detail?id=${item.DonDatHangId}" class="btn btn-default btn-xs">Chi tiết</a></td>
 </tr>`);
 
                     }
