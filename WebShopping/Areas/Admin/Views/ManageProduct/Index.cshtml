@@ -131,6 +131,8 @@
             let keyword = $('#search_keyWord').val();
             let dangKichHoat = $('#search_trangThai').val();
 
+            keyword = RemoveVietnameseTones(keyword);
+
             $.get('/admin/manageproduct/getlistproduct?page=' + page + '&danhMucSanPhamId=' + danhMucSanPhamId + '&keyword=' + keyword + '&dangKichHoat=' + dangKichHoat, function (rs) {
                 if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
                     
@@ -185,12 +187,13 @@
         var ChangeStatus = function (el) {
 
             const isActive = $(el).data('status');
-            const sanPhamId = $(el).closest('div').data('status');
+            const sanPhamId = $(el).closest('div').data('id');
             let url = '/admin/manageproduct/activeproduct?id=' + sanPhamId;
             if (isActive === true) url = '/admin/manageproduct/deactiveproduct?id=' + sanPhamId;
             $.get(url, function (rs) {
                 if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
                     $(el).data('status', !isActive);
+                    $(el).closest('tr').remove();
                     if (isActive === true) {
                         $(el).removeClass('btn-danger');
                         $(el).addClass('btn-success');

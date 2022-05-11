@@ -22,6 +22,13 @@ namespace WebShopping.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            HttpContext.Session["NguoiDungSession"] = null;
+            return Redirect("/user/login");
+            /*return RedirectToAction("Login");*/
+        }
+
         [HttpPost]
         public ActionResult LoginPost(UserLoginPost model)
         {

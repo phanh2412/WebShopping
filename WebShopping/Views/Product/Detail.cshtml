@@ -58,70 +58,44 @@
                         <div class="col-12 order-lg-1 order-2 pt-10 pt-lg-0">
                             <div class="single-product-content">
                                 <h2 class="title">@product.TenSanPham</h2>
-                                <div class="price-box pb-1">
-
-                                    <span class="new-price text-danger">$80.00</span>
-                                </div>          
-                                <p class="short-desc mb-6">
-                                    Lorem ipsum dolor sit amet, consecte adipisicin elit, sed do
-                                    eiusmod tempor incidi ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis
-                                    nostrud exercita ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore.
-                                </p>
-
-                                    <span class="new-price text-danger">@product.Gia</span>
-                                </div>
-
-
-                                <ul class="quantity-with-btn pb-7">
-                                    <li class="quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="1" type="text" id="quantity-add-to-cart">
-                                        </div>
-                                    </li>
-                                    <li class="add-to-cart">
-                                        <a data-id="@product.SanPhamId" class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" onclick="AddToCart(this);">Thêm vào giỏ</a>
-                                    </li>
-                                </ul>
-
-
-
+                                <span class="new-price text-danger">@String.Format("{0:0,0}", product.Gia) VNĐ</span>
                             </div>
+
+
+                            <ul class="quantity-with-btn pb-7">
+                                <li class="quantity">
+                                    <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" value="1" type="text" id="quantity-add-to-cart">
+                                    </div>
+                                </li>
+                                <li class="add-to-cart">
+                                    <a data-id="@product.SanPhamId" class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" onclick="AddToCart(this);" style="margin-top: 20px;">Thêm vào giỏ</a>
+                                </li>
+                            </ul>
+
+
+
                         </div>
-                        <div class="col-12 order-lg-2 order-1 pt-10 pt-lg-0">
-                            <div class="swiper-container single-product-thumbs">
-                                <div class="swiper-wrapper">
-
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/Content/assets/images/product/large-size/2-1-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/Content/assets/images/product/large-size/2-2-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/Content/assets/images/product/large-size/2-3-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/Content/assets/images/product/large-size/2-4-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-
-                                    @{
-                                        foreach (var item in lsProductImag)
-                                        {
-                                            <a href="javascript:void(0)" class="swiper-slide">
-                                                <img class="img-full" src="@item.TenFileAnh" alt="Product Thumnail">
-                                            </a>
-                                        }
+                    </div>
+                    <div class="col-12 order-lg-2 order-1 pt-10 pt-lg-0">
+                        <div class="swiper-container single-product-thumbs">
+                            <div class="swiper-wrapper">
+                                @{
+                                    foreach (var item in lsProductImag)
+                                    {
+                                        <a href="@item.TenFileAnh" class="swiper-slide">
+                                            <img class="img-full" src="@item.TenFileAnh" alt="Product Thumnail">
+                                        </a>
                                     }
+                                }
 
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="product-tab-area section-space-top-100" style="margin-bottom: 100px;">
         <div class="container">
@@ -142,7 +116,7 @@
                                 </p>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
