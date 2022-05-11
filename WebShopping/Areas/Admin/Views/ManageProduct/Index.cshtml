@@ -77,7 +77,7 @@
                 <select class="form-control" id="search_trangThai" onchange="LoadData();">
                     <option value="">Tất cả</option>
                     <option selected value="True">Đang bán</option>
-                    <option value="false">Ngừng bán</option>
+                    <option value="False">Ngừng bán</option>
                 </select>
             </div>
         </div>
@@ -133,7 +133,7 @@
 
             $.get('/admin/manageproduct/getlistproduct?page=' + page + '&danhMucSanPhamId=' + danhMucSanPhamId + '&keyword=' + keyword + '&dangKichHoat=' + dangKichHoat, function (rs) {
                 if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
-                    if (rs.data.ListProduct.length > 0) {
+                    
                         $('#list-product').html('');
                         for (let indexProduct = 0; indexProduct < rs.data.ListProduct.length; indexProduct++) {
                             const item = rs.data.ListProduct[indexProduct];
@@ -160,7 +160,7 @@
                                         </td>
                                     </tr>`);
                         }
-                    }
+                    
 
                     if (rs.data.TotalPage > 0) {
                         $('#pagination ul').html('');
