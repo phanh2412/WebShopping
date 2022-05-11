@@ -171,7 +171,7 @@
                 }
                 if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
                     alert('Bạn đã đặt hàng thành công. Cửa hàng sẽ xử lý đơn dặt hàng của bạn sớm nhất có thể.');
-                    window.location.reload();
+                    window.location.href = '/user/order';
                 }
             });
         }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebShopping.Models;
 using WebShopping.Providers;
+using WebShopping.Filters;
 namespace WebShopping.Controllers
 {
     public class UserController : BaseController
@@ -26,8 +27,8 @@ namespace WebShopping.Controllers
         {
             HttpContext.Session["NguoiDungSession"] = null;
             return Redirect("/user/login");
-            /*return RedirectToAction("Login");*/
         }
+
 
         [HttpPost]
         public ActionResult LoginPost(UserLoginPost model)
@@ -75,5 +76,54 @@ namespace WebShopping.Controllers
             catch (Exception ex) { return Error(ex.Message); }
 
         }
+
+        [UserLoginRequire]
+        public ActionResult Order()
+        {
+            khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
+            ViewBag.ListOrder = db.don_dat_hang.Where(x => x.KhachId == nguoidung.KhachId).ToList();
+
+            return View();
+        }
+
+        [HttpGet]
+        [UserLoginRequire]
+        public ActionResult CancelOrder(string id)
+        {
+            try
+            {
+                khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
+                don_dat_hang donDatHang = db.don_dat_hang.FirstOrDefault(x=>x.DonDatHangId == id && x.KhachId==nguoidung.KhachId);
+                if (donDatHang == null) return Error("Không tìm thấy đơn đặt hàng");
+
+                donDatHang.TrangThai = Constant.TrangThaiDonDatHang.KHACH_HANG_HUY;
+                db.SaveChanges();
+                return Success();
+            }
+            catch(Exception ex) { return Error(); }
+        }
+
+
+        [HttpGet]
+        [UserLoginRequire]
+        public ActionResult GetListOrderDetail(string id)
+        {
+            try
+            {
+                khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
+                don_dat_hang donDatHang = db.don_dat_hang.FirstOrDefault(x => x.DonDatHangId == id && x.KhachId == nguoidung.KhachId);
+                if (donDatHang == null) return Error("Không tìm thấy đơn đặt hàng");
+
+                var lsOrder = db.chi_tiet_don_dat_hang
+                    .Where(x => x.DonDatHangId == donDatHang.DonDatHangId)
+                    .Select(x => new { x.ChiTietDonDatHangId,x.Gia,x.SoLuongMua,x.SanPhamId,x.san_pham.TenSanPham,x.san_pham.AnhDaiDien })
+                    .ToList();                
+                return Success(lsOrder);
+            }
+            catch (Exception ex) { return Error(); }
+        }
+
+
+
     }
 }
