@@ -34,9 +34,10 @@ namespace WebShopping.Controllers
 
         public ActionResult RenderProduct()
         {
-            List<san_pham> listSanPham = db.san_pham.OrderBy(x=>Guid.NewGuid()).Take(8).ToList();
+            List<san_pham> listSanPham = db.san_pham.Where(x=>x.DangKichHoat.Value == true).OrderBy(x=>Guid.NewGuid()).Take(8).ToList();
 
             return PartialView("SanPhamTrangChu", listSanPham);
         }
+
     }
 }

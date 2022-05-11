@@ -1907,7 +1907,6 @@
     <Content Include="Views\Shared\_HeaderPartialView.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Home\HuongDanThanhToan.cshtml" />
     <Content Include="Views\Home\CamKet.cshtml" />

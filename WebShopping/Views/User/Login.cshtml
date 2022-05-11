@@ -12,7 +12,7 @@
                         <h2 class="breadcrumb-heading">Đăng nhập | Đăng ký</h2>
                         <ul>
                             <li>
-                                <a href="@Url.Action("Index", "Home")">Trang chủ <i class="pe-7s-angle-right"></i></a>
+                                <a href="/home/index">Trang chủ <i class="pe-7s-angle-right"></i></a>
                             </li>
                             <li>Đăng nhập | Đăng ký</li>
                         </ul>
@@ -123,6 +123,7 @@
                     return;
                 }
                 if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    alert('Đăng ký thành công!');
                     window.location.href = '/user/login';
                 }
             });

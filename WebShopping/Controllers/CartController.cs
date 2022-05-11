@@ -17,7 +17,7 @@ namespace WebShopping.Controllers
             khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
             gio_hang gioHang = db.gio_hang.FirstOrDefault(x => x.KhachId == nguoidung.KhachId);
 
-            ViewBag.ListItemInCart = db.chi_tiet_gio_hang.Where(x => x.GioHangId == gioHang.GioHangId).Select(x => new CartItemVIewModel() { ChiTietGioHangId = x.ChiTietGioHangId, GioHangId = x.GioHangId, SanPhamId = x.SanPhamId, SoLuong = x.SoLuong, TenSanPham = x.san_pham.TenSanPham, Gia = x.san_pham.Gia, AnhDaiDien = x.san_pham.AnhDaiDien }).ToList();
+            ViewBag.ListItemInCart = db.chi_tiet_gio_hang.Where(x => x.GioHangId == gioHang.GioHangId && x.san_pham.DangKichHoat==true).Select(x => new CartItemVIewModel() { ChiTietGioHangId = x.ChiTietGioHangId, GioHangId = x.GioHangId, SanPhamId = x.SanPhamId, SoLuong = x.SoLuong, TenSanPham = x.san_pham.TenSanPham, Gia = x.san_pham.Gia, AnhDaiDien = x.san_pham.AnhDaiDien }).ToList();
 
             return View();
         }
