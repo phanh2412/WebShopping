@@ -38,5 +38,11 @@ namespace WebShopping.Controllers
 
             return PartialView("SanPhamTrangChu", listSanPham);
         }
+
+        public ActionResult SearchProduct(string key)
+        {
+            var listSanPham = db.san_pham.Where(n => n.TenSanPham.Contains(key));
+            return PartialView("_HeaderPartialView", listSanPham.OrderBy(n => n.TenSanPham));
+        }
     }
 }

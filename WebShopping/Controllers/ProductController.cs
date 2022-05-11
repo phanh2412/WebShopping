@@ -39,9 +39,12 @@ namespace WebShopping.Controllers
             return View() ;
         }
 
-        public ActionResult Detail()
+        public ActionResult Detail(string id)
         {
-            
+            var product = (from p in db.san_pham
+                           where p.SanPhamId == id
+                           select new { p.SanPhamId, p.DanhMucSanPhamId, p.TenSanPham, p.Gia, p.MoTa, p.AnhDaiDien, p.danh_muc_san_pham.TenDanhMucSanPham }).FirstOrDefault();
+            ViewBag.SanPham = product;
             return View();
         }
 
