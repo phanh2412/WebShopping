@@ -161,7 +161,7 @@ namespace WebShopping.Areas.Admin.Controllers
                 {
                     don_dat_hang donDatHang = db.don_dat_hang.FirstOrDefault(x => x.DonDatHangId == id);
                     if (donDatHang == null) return Error(WebShopping.Models.JsonResult.Message.ORDER_NOT_FOUND);
-                    if (donDatHang.TrangThai != Constant.TrangThaiDonDatHang.CHO_XAC_NHAN || donDatHang.TrangThai != Constant.TrangThaiDonDatHang.DANG_XU_LY) return Error(WebShopping.Models.JsonResult.Message.ORDER_STATUS_INVALID);
+                    if (donDatHang.TrangThai != Constant.TrangThaiDonDatHang.CHO_XAC_NHAN && donDatHang.TrangThai != Constant.TrangThaiDonDatHang.DANG_XU_LY) return Error(WebShopping.Models.JsonResult.Message.ORDER_STATUS_INVALID);
                     donDatHang.TrangThai = Constant.TrangThaiDonDatHang.CUA_HANG_HUY;
 
                     chi_tiet_trang_thai_don_dat_hang chiTietTrangThaiDonDatHang = new chi_tiet_trang_thai_don_dat_hang();
