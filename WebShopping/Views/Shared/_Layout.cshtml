@@ -1,7 +1,9 @@
-﻿@using WebShopping.Models
+﻿
+@using WebShopping.Models
 @{
 
     khach nguoidung = (khach)HttpContext.Current.Session["NguoiDungSession"];
+
 }
 
 <!DOCTYPE html>
@@ -43,8 +45,8 @@
                                 <a href="/home/index" class="header-logo"><img src="/Content/assets/images/logo/logo1.png" alt="Header Logo"></a>
                                 <div class="header-search-area d-none d-lg-block">
                                     <div class="header-searchbox">
-                                        <input class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
-                                        <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
+                                        <input id="keyword" class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
+                                        <button class="btn btn-outline-whisper btn-primary-hover" type="submit" onclick="searchProduct();"><i class="pe-7s-search"></i></button>
                                     </div>
                                 </div>
                                 <div class="header-right">
@@ -61,7 +63,9 @@
                                                     }
                                                     else
                                                     {
-                                                        <li><a class="dropdown-item" href="/user/index">Tài khoản của tôi</a></li>
+                                                        <li><a class="dropdown-item" href="/user/index"><b>@nguoidung.HoVaTen</b></a></li>
+                                                        <li><a class="dropdown-item" href="/user/logout">Đăng xuất</a></li>
+                                                        
                                                     }
                                                 }
 
@@ -230,6 +234,11 @@
                 }
             });
         }
+        function searchProduct() {
+            let keyword = $('#keyword').val();
+            window.location.href = '/product/index?key=' + keyword;
+        }
+
 
     </script>
     @if (nguoidung != null)
@@ -241,3 +250,4 @@
 </body>
 
 </html>
+

@@ -62,11 +62,11 @@
                                 <thead>
                                     <tr>
                                         <th style="width:30px;" class="product_remove"></th>
-                                        <th style="width:100px;" class="product-thumbnail">images</th>
-                                        <th class="cart-product-name">Product</th>
-                                        <th class="product-price">Unit Price</th>
-                                        <th style="width:100px;" class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">Total</th>
+                                        <th style="width:100px;" class="product-thumbnail">Ảnh</th>
+                                        <th class="cart-product-name">Tên sản phẩm</th>
+                                        <th class="product-price">Giá</th>
+                                        <th style="width:100px;" class="product-quantity">Số lượng</th>
+                                        <th class="product-subtotal">Tổng tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,7 +82,7 @@
                                                     </a>
                                                 </td>
                                                 <td class="product-name"><a href="javascript:void(0)">@item.TenSanPham</a></td>
-                                                <td class="product-price"><span class="amount">@item.Gia</span></td>
+                                                <td class="product-price"><span class="amount">@String.Format("{0:0,0}", (item.SoLuong * item.Gia)) VNĐ</span></td>
                                                 <td class="quantity">
                                                     <div>
                                                         <a onclick="DecreaseQuantity(this);">-</a>
@@ -90,7 +90,7 @@
                                                         <a onclick="IncreaseQuantity(this);">+</a>
                                                     </div>
                                                 </td>
-                                                <td class="product-subtotal"><span class="amount">@(item.SoLuong * item.Gia)</span></td>
+                                                <td class="product-subtotal"><span class="amount">@String.Format("{0:0,0}", (item.SoLuong * item.Gia)) VNĐ</span></td>
                                             </tr>
                                         }
                                     }
@@ -101,7 +101,7 @@
                         <div class="row">
                             <div class="col-md-5 ml-auto">
                                 <div class="cart-page-total">
-                                    <a onclick="CreateOrder();">Đặt hàng</a>
+                                    <a onclick="CreateOrder();" style="color: white;">Đặt hàng</a>
                                 </div>
                             </div>
                         </div>

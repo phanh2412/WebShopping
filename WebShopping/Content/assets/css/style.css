@@ -15577,10 +15577,13 @@ img {
   -o-object-position: center center;
      object-position: center center;
 }
+.swiper-slide > .img-full{
+    height: 120px;
+}
 
 ::-moz-selection {
-  background-color: #bac34e;
-  color: #fff;
+    background-color: #bac34e;
+    color: #fff;
 }
 
 ::selection {
@@ -17857,6 +17860,7 @@ blockquote .inner-content .user-name:before {
 .product-tab-style-2 li.nav-item a.active {
   background-color: #bac34e;
   color: #fff;
+  width: 200px;
 }
 
 .product-tab-nav {
@@ -18251,7 +18255,7 @@ blockquote .inner-content .user-name:before {
 }
 
 .single-product-slider .swiper-slide .single-img img {
-  height: 100%;
+  height: 80%;
 }
 
 .single-product-content.with-sticky {
