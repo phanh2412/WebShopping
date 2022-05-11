@@ -11,6 +11,7 @@ namespace WebShopping.Models
         [Key]
         public long AnhSanPhamId { get; set; }
 
+        [StringLength(36)]
         public string SanPhamId { get; set; }
 
         [StringLength(200)]
@@ -18,5 +19,4 @@ namespace WebShopping.Models
 
         public virtual san_pham san_pham { get; set; }
     }
-
 }

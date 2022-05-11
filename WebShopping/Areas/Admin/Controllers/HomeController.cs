@@ -12,11 +12,11 @@ namespace WebShopping.Areas.Admin.Controllers
         public ActionResult Index()
         {
             ViewBag.TotalUser = db.khaches.Count(x => x.DangHoatDong == true);
-            ViewBag.TotalDoneOrder = db.don_dat_hang.Count(x => x.TrangThai == don_dat_hang.EnumTrangThai.HOAN_THANH);
-            ViewBag.TotalPendingOrder = db.don_dat_hang.Count(x => x.TrangThai == don_dat_hang.EnumTrangThai.CHO_XAC_NHAN);
+            ViewBag.TotalDoneOrder = db.don_dat_hang.Count(x => x.TrangThai == Constant.TrangThaiDonDatHang.HOAN_THANH);
+            ViewBag.TotalPendingOrder = db.don_dat_hang.Count(x => x.TrangThai == Constant.TrangThaiDonDatHang.CHO_XAC_NHAN);
 
-            ViewBag.TotalCustomerCancelOrder = db.don_dat_hang.Count(x => x.TrangThai == don_dat_hang.EnumTrangThai.KHACH_HANG_HUY);
-            ViewBag.TotalShopCancelOrder = db.don_dat_hang.Count(x => x.TrangThai == don_dat_hang.EnumTrangThai.CUA_HANG_HUY);
+            ViewBag.TotalCustomerCancelOrder = db.don_dat_hang.Count(x => x.TrangThai == Constant.TrangThaiDonDatHang.KHACH_HANG_HUY);
+            ViewBag.TotalShopCancelOrder = db.don_dat_hang.Count(x => x.TrangThai == Constant.TrangThaiDonDatHang.CUA_HANG_HUY);
 
             return View();
         }

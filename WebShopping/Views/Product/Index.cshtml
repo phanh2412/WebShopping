@@ -55,19 +55,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="widgets-area widgets-filter mb-9">
-                            <h2 class="widgets-title mb-5" style="color: lightcoral;">Giá</h2>
-                            <div class="price-filter">
-                                <div id="slider-range"></div>
-                                <div class="price-slider-amount">
-                                    <button class="btn btn-primary btn-secondary-hover">Lọc</button>
-                                    <div class="label-input position-relative">
-                                        <label>Giá : </label>
-                                        <input type="text" id="amount" name="price" placeholder="Add Your Price" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                
 
                     </div>
                 </div>
@@ -80,13 +68,13 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="product-item">
                                             <div class="product-img img-zoom-effect">
-                                                <a href="single-product.html">
-                                                    <img class="img-full" src="~/Content/assets/images/@sp.AnhDaiDien" alt="Product Images">
+                                                <a href="/product/detail?id=@sp.SanPhamId">
+                                                    <img class="img-full" src="@sp.AnhDaiDien" alt="Product Images">
                                                 </a>
                                                 <div class="product-add-action">
                                                     <ul>
                                                         <li>
-                                                            <a href="cart.html">
+                                                            <a onclick="AddToCart(this);" data-id="@sp.SanPhamId">
                                                                 <i class="pe-7s-cart"></i>
                                                             </a>
                                                         </li>
@@ -94,7 +82,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-content">
-                                                <a class="product-name" href="single-product.html">@sp.TenSanPham</a>
+                                                <a class="product-name" href="/product/detail?id=@sp.SanPhamId">@sp.TenSanPham</a>
                                                 <div class="price-box pb-1">
                                                     <span class="new-price">@String.Format("{0:0,0}", sp.Gia) VNĐ</span>
                                                 </div>
