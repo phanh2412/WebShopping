@@ -26,26 +26,52 @@ namespace WebShopping.Controllers
         {
             try
             {
-                khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
-                gio_hang gioHang = db.gio_hang.FirstOrDefault(x => x.KhachId == nguoidung.KhachId);
-                if (gioHang == null) return Error();
-
-                List<chi_tiet_gio_hang> lsChiTietGioHang = db.chi_tiet_gio_hang.Where(x => x.GioHangId == gioHang.GioHangId).ToList();
-                if (lsChiTietGioHang.Count <= 0) return Error("Giỏ hàng không có sản phẩm.");
-
-                don_dat_hang donDatHang = new don_dat_hang();
-                donDatHang.KhachId = nguoidung.KhachId;
-                donDatHang.TongTien = 0;
-                donDatHang.TrangThai = Constant.TrangThaiDonDatHang.CHO_XAC_NHAN;
-                donDatHang.NgayTao = DateTime.Now;
-                donDatHang.DonDatHangId = Guid.NewGuid().ToString();
-                
-                for(int index = 0;index< lsChiTietGioHang.Count; index++)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                
+                    khach nguoidung = (khach)HttpContext.Session["NguoiDungSession"];
+                    gio_hang gioHang = db.gio_hang.FirstOrDefault(x => x.KhachId == nguoidung.KhachId);
+                    if (gioHang == null) return Error();
+
+                    List<chi_tiet_gio_hang> lsChiTietGioHang = db.chi_tiet_gio_hang.Where(x => x.GioHangId == gioHang.GioHangId ).ToList();
+                    if (lsChiTietGioHang.Count <= 0) return Error("Giỏ hàng không có sản phẩm.");
+
+                    don_dat_hang donDatHang = new don_dat_hang();
+                    donDatHang.KhachId = nguoidung.KhachId;
+                    donDatHang.TongTien = 0;
+                    donDatHang.TrangThai = Constant.TrangThaiDonDatHang.CHO_XAC_NHAN;
+                    donDatHang.NgayTao = DateTime.Now;
+                    donDatHang.DonDatHangId = Guid.NewGuid().ToString();
+
+                    for (int index = 0; index < lsChiTietGioHang.Count; index++)
+                    {
+                        if (lsChiTietGioHang[index].san_pham.DangKichHoat == false) continue;
+                        string sanPhamId = lsChiTietGioHang[index].SanPhamId;
+                        san_pham sanPham = db.san_pham.FirstOrDefault(x => x.SanPhamId == sanPhamId);
+                        if (sanPham == null) return Error("Không tìm thấy thông tin sản phẩm.");
+
+                        chi_tiet_don_dat_hang chiTIetDonDatHang = new chi_tiet_don_dat_hang();
+                        chiTIetDonDatHang.DonDatHangId = donDatHang.DonDatHangId;
+                        chiTIetDonDatHang.Gia = sanPham.Gia;
+                        chiTIetDonDatHang.SanPhamId = sanPham.SanPhamId;
+                        chiTIetDonDatHang.SoLuongMua = lsChiTietGioHang[index].SoLuong;
+
+                        donDatHang.TongTien += chiTIetDonDatHang.SoLuongMua * chiTIetDonDatHang.Gia;
+
+                        db.chi_tiet_don_dat_hang.Add(chiTIetDonDatHang);
+                    }
+                    db.don_dat_hang.Add(donDatHang);
+
+                    gioHang.TongSanPham = 0;
+                    gioHang.TongTien = 0;
+
+                    db.chi_tiet_gio_hang.RemoveRange(lsChiTietGioHang);
+
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                    return Success();
                 }
 
-                return Success();
 
             }
             catch (Exception ex) { return Error(); }

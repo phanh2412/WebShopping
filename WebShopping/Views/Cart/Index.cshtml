@@ -101,7 +101,7 @@
                         <div class="row">
                             <div class="col-md-5 ml-auto">
                                 <div class="cart-page-total">
-                                    <a href="/cart/checkout">Đặt hàng</a>
+                                    <a onclick="CreateOrder();">Đặt hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +159,19 @@
                     total += price;
                     $(tr).find('.product-subtotal .amount').text(total);
                     CountItemInCart();
+                }
+            });
+        }
+
+        var CreateOrder = function () {
+            $.get('/cart/checkout', function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) {
+                    if (GetObjectProperty(rs, 'message') !== '') alert(GetObjectProperty(rs, 'message'));
+                    return;
+                }
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    alert('Bạn đã đặt hàng thành công. Cửa hàng sẽ xử lý đơn dặt hàng của bạn sớm nhất có thể.');
+                    window.location.reload();
                 }
             });
         }
