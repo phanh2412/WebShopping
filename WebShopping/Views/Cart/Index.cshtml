@@ -1,9 +1,37 @@
 ﻿@using WebShopping.Models
 @{
     ViewBag.Title = "Giỏ hàng";
+    List<CartItemVIewModel> lsChiTietGioHang = (List<CartItemVIewModel>)ViewBag.ListItemInCart;
+}
 
-    List<chi_tiet_gio_hang> lsChiTietGioHang = (List<chi_tiet_gio_hang>)ViewBag.ListItemInCart;
+@section styles{
+    <style>
+        .cart-area .quantity > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
 
+            .cart-area .quantity > div > a {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border: .5px solid #efefef;
+                border-radius:5px;
+            }
+
+            .cart-area .quantity > div > div {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    </style>
 }
 
 <main class="main-content">
@@ -33,11 +61,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="product_remove">remove</th>
-                                        <th class="product-thumbnail">images</th>
+                                        <th style="width:30px;" class="product_remove"></th>
+                                        <th style="width:100px;" class="product-thumbnail">images</th>
                                         <th class="cart-product-name">Product</th>
                                         <th class="product-price">Unit Price</th>
-                                        <th class="product-quantity">Quantity</th>
+                                        <th style="width:100px;" class="product-quantity">Quantity</th>
                                         <th class="product-subtotal">Total</th>
                                     </tr>
                                 </thead>
@@ -46,46 +74,34 @@
                                     @{
                                         foreach (var item in lsChiTietGioHang)
                                         {
-                                            <tr>
-                                                <td class="product_remove">
-                                                    <a href="javascript:void(0)"><i class="pe-7s-close" title="Remove"></i></a>
-                                                </td>
+                                            <tr data-id="@item.ChiTietGioHangId" id="@item.ChiTietGioHangId">
+                                                <td class="product_remove"><a href="DeleteCartItem(this);"><i class="pe-7s-close" title="Remove"></i></a></td>
                                                 <td class="product-thumbnail">
                                                     <a href="javascript:void(0)">
-                                                        <img src="assets/images/product/small-size/1-1-112x124.jpg" alt="Cart Thumbnail">
+                                                        <div style="width:100px;height:100px;background-position:center;background-size:cover;background-repeat:no-repeat; background-image:url(@item.AnhDaiDien);"></div>
                                                     </a>
                                                 </td>
-                                                <td class="product-name"><a href="javascript:void(0)">Black Pepper Grains</a></td>
-                                                <td class="product-price"><span class="amount"></span></td>
+                                                <td class="product-name"><a href="javascript:void(0)">@item.TenSanPham</a></td>
+                                                <td class="product-price"><span class="amount">@item.Gia</span></td>
                                                 <td class="quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <input class="cart-plus-minus-box" value="1" type="text">
+                                                    <div>
+                                                        <a onclick="DecreaseQuantity(this);">-</a>
+                                                        <div>@item.SoLuong</div>
+                                                        <a onclick="IncreaseQuantity(this);">+</a>
                                                     </div>
                                                 </td>
-                                                <td class="product-subtotal"><span class="amount"></span></td>
+                                                <td class="product-subtotal"><span class="amount">@(item.SoLuong * item.Gia)</span></td>
                                             </tr>
                                         }
                                     }
-
-
-
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="coupon-all">
-                                    <div class="coupon2">
-                                        <input class="button" id="update_cart" onclick="UpdateCart(this);" value="Cập nhật giỏ hàng" type="button">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="col-md-5 ml-auto">
                                 <div class="cart-page-total">
-
-                                    <a href="javascript:void(0)">Proceed to checkout</a>
+                                    <a href="/cart/checkout">Đặt hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -96,3 +112,55 @@
     </div>
 </main>
 
+@section scripts{
+    <script>
+        var DecreaseQuantity = function (el) {
+            const id = $(el).closest('tr').data('id');
+            const tr = $(el).closest('tr');
+            $.get('/cart/DecreaseQuantity?chiTietId=' + id, function (rs) {
+                if (GetObjectProperty(rs, 'status') == Enum.ResponseStatus.SUCCESS) {
+                    let quantity = $(el).siblings('div').text();
+                    quantity = parseInt(quantity);
+                    quantity -= 1;
+
+                    if (quantity === 0) {
+                        $(tr).remove(); return;
+                    }
+
+                    $(el).siblings('div').text(quantity);
+
+                    let total = $(tr).find('.product-subtotal .amount').text();
+                    total = parseInt(total);
+                    let price = $(tr).find('.product-price .amount').text();
+                    price = parseInt(price);
+
+                    total -= price;
+                    
+                    $(tr).find('.product-subtotal .amount').text(total);
+                    CountItemInCart();
+                }
+            });
+        }
+        var IncreaseQuantity = function (el) {
+            const id = $(el).closest('tr').data('id');
+            const tr = $(el).closest('tr');
+            $.get('/cart/IncreaseQuantity?chiTietId=' + id, function (rs) {
+                if (GetObjectProperty(rs, 'status') == Enum.ResponseStatus.SUCCESS) {
+                    let quantity = $(el).siblings('div').text();
+                    quantity = parseInt(quantity);
+                    quantity += 1;
+                    $(el).siblings('div').text(quantity);
+
+                    let total = $(tr).find('.product-subtotal .amount').text();
+                    total = parseInt(total);
+                    let price = $(tr).find('.product-price .amount').text();
+                    price = parseInt(price);
+
+                    total += price;
+                    $(tr).find('.product-subtotal .amount').text(total);
+                    CountItemInCart();
+                }
+            });
+        }
+    </script>
+}
