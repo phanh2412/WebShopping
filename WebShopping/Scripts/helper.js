@@ -1,6 +1,7 @@
 ﻿var Enum = {
     ResponseStatus: { SUCCESS: 'success', ERROR: 'error', UNAUTHOR: 'unauthor', UNAUTHEN: 'unauthen' },
-    OrderStatus: { CHO_XAC_NHAN: 'Chờ xác nhận', DANG_XU_LY: 'Đang xử lý', DA_THANH_TOAN: 'Đã thanh toán', HOAN_THANH: 'Hoàn thành', KHACH_HANG_HUY: 'Khách hàng hủy', CUA_HANG_HUY: 'Cửa hàng hủy' }
+    OrderStatus: { CHO_XAC_NHAN: 'Chờ xác nhận', DANG_XU_LY: 'Đang xử lý', DA_THANH_TOAN: 'Đã thanh toán', HOAN_THANH: 'Hoàn thành', KHACH_HANG_HUY: 'Khách hàng hủy', CUA_HANG_HUY: 'Cửa hàng hủy' },
+    OrderStatusValue: { CHO_XAC_NHAN: 'CHO_XAC_NHAN', DANG_XU_LY: 'DANG_XU_LY', DA_THANH_TOAN: 'DA_THANH_TOAN', HOAN_THANH: 'HOAN_THANH', KHACH_HANG_HUY: 'KHACH_HANG_HUY', CUA_HANG_HUY: 'CUA_HANG_HUY' }
 };
 
 var GetObjectProperty = function (obj, prop, defaultValue = '') {
@@ -53,4 +54,27 @@ var RemoveVietnameseTones = function(str) {
     // Bỏ dấu câu, kí tự đặc biệt
     str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
     return str;
+}
+
+var DateStringFormat = function ({ stringDate, currentFormat = 'yyyy/mm/dd', newFormat = 'dd/mm/yyyy' }) {
+    if (stringDate === '' || stringDate === null || typeof stringDate === 'undefined') return '';
+    if (typeof stringDate === 'object') {
+        newFormat = newFormat.replace('dd', (stringDate.getDate() > 9 ? stringDate.getDate() + '' : '0' + stringDate.getDate()));
+        newFormat = newFormat.replace('mm', (stringDate.getMonth() + 1 > 9 ? (stringDate.getMonth() + 1) + '' : '0' + (stringDate.getMonth() + 1)));
+        newFormat = newFormat.replace('yyyy', stringDate.getFullYear() + '');
+        newFormat = newFormat.replace('hh', stringDate.getHours() > 9 ? stringDate.getHours() + '' : '0' + stringDate.getHours());
+        newFormat = newFormat.replace('mi', stringDate.getMinutes() > 9 ? stringDate.getMinutes() + '' : '0' + stringDate.getMinutes());
+        newFormat = newFormat.replace('ss', stringDate.getSeconds() > 9 ? stringDate.getSeconds() + '' : '0' + stringDate.getSeconds());
+        return newFormat;
+    }
+    const stringDatePart = stringDate.split(/[-\/._,\\+=!@#$%ˆ&* :a-zA-Z]/g);
+    const currentFormatPart = currentFormat.split(/[-\/._,\\+=!@#$%ˆ&* :]/g);
+    for (var i = 0; i < stringDatePart.length; i++) {
+        if (currentFormatPart[i] === 'dd') newFormat = newFormat.replace('dd', stringDatePart[i].length < 2 ? '0' + stringDatePart[i] : stringDatePart[i]);
+        if (currentFormatPart[i] === 'mm') newFormat = newFormat.replace('mm', stringDatePart[i].length < 2 ? '0' + stringDatePart[i] : stringDatePart[i]);
+        if (currentFormatPart[i] === 'yyyy') newFormat = newFormat.replace('yyyy', stringDatePart[i]);
+        if (currentFormatPart[i] === 'hh') newFormat = newFormat.replace('hh', stringDatePart[i].length < 2 ? '0' + stringDatePart[i] : stringDatePart[i]);
+        if (currentFormatPart[i] === 'mi') newFormat = newFormat.replace('mi', stringDatePart[i].length < 2 ? '0' + stringDatePart[i] : stringDatePart[i]);
+        if (currentFormatPart[i] === 'ss') newFormat = newFormat.replace('ss', stringDatePart[i].length < 2 ? '0' + stringDatePart[i] : stringDatePart[i]);
+    } return newFormat;
 }

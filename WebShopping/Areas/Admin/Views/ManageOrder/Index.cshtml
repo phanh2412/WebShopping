@@ -2,6 +2,196 @@
 @{
     ViewBag.Title = "Index";
 }
+@section styles{
+    <style>
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            flex-wrap: wrap;
+        }
 
-<h2>Index</h2>
+            .search-section .search-item {
+                display: flex;
+                flex-direction: column;
+                padding: 10px 20px 10px 0;
+                flex: 1;
+            }
 
+                .search-section .search-item > .label {
+                    width: 100px;
+                }
+
+                .search-section .search-item > .search-input {
+                    width: 100%;
+                }
+
+        #list-order .order-info {
+        }
+
+            #list-order .order-info .name {
+                font-size: 18px;
+            }
+
+            #list-order .order-info .total-amount {
+                font-size: 13px;
+            }
+
+            #list-order .order-info .order-date {
+                font-size: 13px;
+            }
+
+        #list-order .action {
+        }
+        #list-order .action a{
+        }
+    </style>
+}
+
+<div class="search-section">
+    <div class="search-item">
+        <div class="label">Từ khóa</div>
+        <div class="search-input">
+            <input class="form-control" placeholder="Nhập từ khóa tìm kiếm" id="search_keyWord" onkeypress="search_keyWord_OnKeypress(event);" />
+        </div>
+    </div>
+    <div style="display:flex;flex-direction:row;">
+
+        <div class="search-item">
+            <div class="label">Trạng thái</div>
+            <div class="search-input">
+                <select class="form-control" id="search_trangThai" onchange="LoadData();">
+                    <option value="">Tất cả</option>
+                    <option value="CHO_XAC_NHAN">Chờ xác nhận</option>
+                    <option value="DANG_XU_LY">Chờ xử lý</option>
+                    <option value="DA_THANH_TOAN">Đã thanh toán</option>
+                    <option value="HOAN_THANH">Hoàn thành</option>
+                    <option value="KHACH_HANG_HUY">Khách hàng hủy</option>
+                    <option value="CUA_HANG_HUY">Cửa hàng hủy</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width:200px;">Mã đơn</th>
+                <th>Thông tin đặt hàng</th>
+                <th style="width:150px;">Trạng thái</th>
+                <th style="width:250px;"></th>
+            </tr>
+        </thead>
+        <tbody id="list-order">
+        </tbody>
+    </table>
+</div>
+
+<div id="pagination">
+    <ul>
+        <li><button class="btn btn-primary btn-tone">1</button></li>
+        <li class="active"><button class="btn btn-primary btn-tone">2</button></li>
+    </ul>
+</div>
+
+@section scripts{
+    <script>
+        var LoadData = function (page = 1) {
+            let keyWord = $('#search_keyWord').val();
+            let trangThai = $('#search_trangThai').val();
+            keyWord = RemoveVietnameseTones(keyWord);
+            $.get('/manageorder/GetListOrder?page=' + page + '&keyword=' + keyWord + '&status=' + trangThai, function (rs) {
+                if (GetObjectProperty(rs, 'status') == Enum.ResponseStatus.SUCCESS) {
+                    if (GetObjectProperty(rs.data, 'ListOrder') !== '') {
+                        $('#list-order').html('');
+                        for (let indexOrder = 0; indexOrder < rs.data.ListOrder.length; indexOrder++) {
+                            const item = rs.data.ListOrder[indexOrder]; 
+                            $('#list-order').append('<tr>'+RenderItemOrder(item)+'</tr>');
+                        }
+                    }
+                }
+            });
+        }
+
+        var RenderItemOrder = function (item) {
+            item.NgayTao = item.NgayTao.replace('/Date(', '').replace(')/', '');
+            const orderDate = new Date(parseInt(item.NgayTao));
+            item.NgayTao = DateStringFormat({ stringDate: orderDate, newFormat: 'dd/mm/yyyy  hh:mi:ss' });
+            let trangThai = '';
+            let buttonAction = '';
+            switch (item.TrangThai) {
+                case Enum.OrderStatusValue.CHO_XAC_NHAN: {
+                    trangThai = '<span class="badge badge-pill badge-primary">' + Enum.OrderStatus[item.TrangThai] + '</span>';
+                    buttonAction = '<button data-id="' + item.DonDatHangId + '" data-status="' + Enum.OrderStatusValue.DANG_XU_LY + '" class="btn btn-primary btn-sm btn-tone" onclick="ChangeStatus(this);">Xác nhận</button>';
+                    buttonAction += ' <button data-id="' + item.DonDatHangId + '" data-status="' + Enum.OrderStatusValue.CUA_HANG_HUY + '" class="btn btn-warning btn-sm btn-tone" onclick="ChangeStatus(this);">Hủy</button>';
+                    break;
+                }
+                case Enum.OrderStatusValue.DANG_XU_LY: {
+                    trangThai = '<span class="badge badge-pill badge-warning">' + Enum.OrderStatus[item.TrangThai] + '</span>';
+                    buttonAction = '<button data-id="' + item.DonDatHangId + '" data-status="' + Enum.OrderStatusValue.DA_THANH_TOAN + '" class="btn btn-secondary btn-sm btn-tone" onclick="ChangeStatus(this);">Đã thanh toán</button>';
+                    buttonAction += ' <button data-id="' + item.DonDatHangId + '" data-status="' + Enum.OrderStatusValue.CUA_HANG_HUY + '" class="btn btn-warning btn-sm btn-tone" onclick="ChangeStatus(this);">Hủy</button>';
+                    break;
+                }
+                case Enum.OrderStatusValue.DA_THANH_TOAN: {
+                    trangThai = '<span class="badge badge-pill badge-secondary">' + Enum.OrderStatus[item.TrangThai] + '</span>';
+                    buttonAction = ' <button data-id="' + item.DonDatHangId + '" data-status="' + Enum.OrderStatusValue.HOAN_THANH + '" class="btn btn-success btn-sm btn-tone" onclick="ChangeStatus(this);">Hoàn thành</button>';
+                    break;
+                }
+                case Enum.OrderStatusValue.HOAN_THANH: {
+                    trangThai = '<span class="badge badge-pill badge-success">' + Enum.OrderStatus[item.TrangThai] + '</span>';
+                    break;
+                }
+                case Enum.OrderStatusValue.KHACH_HANG_HUY: {
+                    trangThai = '<span class="badge badge-pill badge-danger">' + Enum.OrderStatus[item.TrangThai] + '</span>';
+                    break;
+                }
+                case Enum.OrderStatusValue.CUA_HANG_HUY: {
+                    trangThai = '<span class="badge badge-pill badge-danger">' + Enum.OrderStatus[item.TrangThai] + '</span>';
+                    break;
+                }
+            }
+            html = `<td>${item.DonDatHangId}</td>
+                    <td>
+                        <div class="order-info">
+                            <div class="name">${item.HoVaTen}</div>
+                            <div class="total-amount">Tổng tiền : ${NumberFormat(item.TongTien)}</div>
+                            <div class="order-date">Ngày đặt : ${item.NgayTao}</div>
+                        </div>
+                    </td>
+                    <td><div class="order-status">${trangThai}</div></td>
+                    <td><div class="action">${buttonAction}</div></td>`;
+            return html;
+        }
+
+        var ChangeStatus = function (el) {
+            const id = $(el).data('id');
+            const status = $(el).data('status');
+            let url = '/admin/manageorder/';
+            switch (status) {
+                case Enum.OrderStatusValue.DANG_XU_LY: url += 'ProcessOrder'; break;
+                case Enum.OrderStatusValue.DA_THANH_TOAN: url += 'ConfirmPaidOrder'; break;
+                case Enum.OrderStatusValue.HOAN_THANH: url += 'DoneOrder'; break;
+                case Enum.OrderStatusValue.CUA_HANG_HUY: url += 'ShopCancel'; break;
+            }
+            url += '?id=' + id;
+            $.get(url, function (rs) {
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.ERROR) {
+                    if (GetObjectProperty(rs, 'message') !== '') alert(GetObjectProperty(rs, 'message'));
+                    return;
+                }
+                if (GetObjectProperty(rs, 'status') === Enum.ResponseStatus.SUCCESS) {
+                    $.get('/admin/manageorder/GetOrderById?id=' + id, function (rs) {
+                        $(el).closest('tr').html(RenderItemOrder(rs.data));
+                    });
+                }
+            });
+
+        }
+        LoadData();
+    </script>
+}
