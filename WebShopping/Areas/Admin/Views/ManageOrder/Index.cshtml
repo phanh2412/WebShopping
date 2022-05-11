@@ -167,6 +167,9 @@
                     <td><div class="action">${buttonAction}</div></td>`;
             return html;
         }
+        var search_keyWord_OnKeypress = function (event) {
+            if (event.keyCode === 13) LoadData();
+        }
 
         var ChangeStatus = function (el) {
             const id = $(el).data('id');
