@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Models\anh_san_pham.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\chi_tiet_don_dat_hang.cs" />
     <Compile Include="Models\chi_tiet_gio_hang.cs" />
     <Compile Include="Models\chi_tiet_trang_thai_don_dat_hang.cs" />
