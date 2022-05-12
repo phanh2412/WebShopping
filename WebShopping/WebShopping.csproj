@@ -1914,6 +1914,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Home\SanPhamTrangChu.cshtml" />
     <Content Include="Views\Product\Detail.cshtml" />
+    <Content Include="Views\User\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
